@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Minero")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5109502a4a3e30b7eca79cc760f318eed1a39952")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d44907af3b4f0b67449c215b31e94b859f46494")]
 [assembly: System.Reflection.AssemblyProductAttribute("Minero")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Minero")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
