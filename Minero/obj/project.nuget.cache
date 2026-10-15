@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ZTApU9pY4iTk68vjeO/OdsQND6WxJD9AairEmy/0rmpXv5Xl34BtTqF7pGpS9BXies6P06aDTwfCiar9Xjx7/g==",
+  "dgSpecHash": "4ojqCMiRrSGm/Qn9xTCSpTSeG3ufVcOJ/c5u6AMrPGSPeuuDfBeNr8Y2Y8xEeBZri2rUw7hK2Ksj4MXoWzIa6g==",
   "success": true,
   "projectFilePath": "/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/Minero.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/y4g2s7/.nuget/packages/taglibsharp/2.3.0/taglibsharp.2.3.0.nupkg.sha512"
+  ],
   "logs": []
 }

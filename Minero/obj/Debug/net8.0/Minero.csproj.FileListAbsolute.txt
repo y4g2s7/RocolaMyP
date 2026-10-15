@@ -13,3 +13,6 @@
 /home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.pdb
 /home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.genruntimeconfig.cache
 /home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/ref/Minero.dll
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/bin/Debug/net8.0/TagLibSharp.dll
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.csproj.AssemblyReference.cache
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.csproj.CopyComplete
