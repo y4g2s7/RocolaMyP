@@ -1,0 +1,15 @@
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.GeneratedMSBuildEditorConfig.editorconfig
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.AssemblyInfoInputs.cache
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.AssemblyInfo.cs
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.csproj.CoreCompileInputs.cache
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.sourcelink.json
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/bin/Debug/net8.0/Minero
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/bin/Debug/net8.0/Minero.deps.json
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/bin/Debug/net8.0/Minero.runtimeconfig.json
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/bin/Debug/net8.0/Minero.dll
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/bin/Debug/net8.0/Minero.pdb
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.dll
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/refint/Minero.dll
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.pdb
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/Minero.genruntimeconfig.cache
+/home/y4g2s7/Documents/ProyectosMyP/RocolaMyP/Minero/obj/Debug/net8.0/ref/Minero.dll
