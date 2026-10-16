@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+
+// Libreria para buscar en un directorio
 using System.IO;
+// Libreria para leer la etiqueta Id3v2.4[1,2,3]
 using TagLib;
 
 public class MetaDatos{
@@ -15,22 +18,34 @@ public class MetaDatos{
 
     private static string datos(string ruta,ref int contador){
 	try{
-		using(TagLib.File archivo = TagLib.File.Create(ruta)){
-		    var etiqueta = archivo.GetTag(TagTypes.Id3v2, false) as TagLib.Id3v2.Tag;
-		    if(etiqueta == null || etiqueta.Version!=4){
-		        return $"ERROR {ruta}: sin ID3v2.4";    
-		    }
-		    string mensaje = ($"Título: {archivo.Tag.Title}\n");
-		    mensaje +=($"Artista: {archivo.Tag.FirstPerformer}\n");
-		    mensaje +=($"Álbum: {archivo.Tag.Album}\n");
-		    mensaje +=($"Duración: {archivo.Properties.Duration}");
-		    contador ++;
-		    return mensaje;
+	    using(TagLib.File archivo = TagLib.File.Create(ruta)){
+		var etiqueta = archivo.GetTag(TagTypes.Id3v2, false) as TagLib.Id3v2.Tag;
+		if(etiqueta == null || etiqueta.Version!=4){
+		    return $"ERROR {ruta}: sin ID3v2.4";    
 		}
-	    }
-	    catch{
-	        return $"Error al intentar leer el mp3 {ruta}";
+		string mensaje = ($"Título: {etiqueta.Title}\n");
+
+		string genero = etiqueta.FirstGenre;
+		if(string.IsNullOrWhiteSpace(genero)){
+		    genero = "Unknown";
+		}
+	        mensaje +=($"Genero: {genero}\n");
 		
+		mensaje +=($"Performer: {etiqueta.FirstPerformer}\n");
+		mensaje +=($"Álbum: {etiqueta.Album}\n");
+		mensaje +=($"Track: {etiqueta.Track}\n");
+		mensaje +=($"Año: {etiqueta.Year}\n");
+
+		string? carpeta = Path.GetDirectoryName(ruta);
+		mensaje +=($"Album path: {carpeta}\n");
+		mensaje +=($"Rola path: {ruta}");
+		contador ++;
+		return mensaje;
 	    }
+	}
+	catch{
+	    return $"Error al intentar leer el mp3 {ruta}";
+	    
+	}
     }
 }
