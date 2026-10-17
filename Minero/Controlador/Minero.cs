@@ -16,13 +16,19 @@ public class Minero{
 	    Vista.imprime("La carpeta no existe");    
 	    return; 
 	}
-
-	List<string> mensajes = new List<string>();
-	MetaDatos.procesar(carpeta,mensajes);
-
-	foreach(string mensaje in mensajes){
-	    Vista.imprime(mensaje);
+	
+	List<Ficha> fichas = new List<Ficha>();
+	MetaDatos.procesar(carpeta,fichas);
+	int contador = 0;
+	foreach(Ficha f in fichas){
+	    if(f == null){
+		Vista.imprime("ERROR al leer mp3\n");
+	    }else{
+		Vista.imprime(f.imprimir());
+		contador ++;
+	    }
 	}
+	Vista.imprime($"Se encontraron {contador} canciones");
     }
     
 }
