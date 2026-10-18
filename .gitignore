@@ -1,0 +1,6 @@
+# Archivos de base de datos SQLite
+*.db
+
+# Carpetas de compilación de .NET
+bin/
+obj/

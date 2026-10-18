@@ -7,23 +7,25 @@ public class BaseDeDatos{
 	string conexionString = $"Data Source={ruta};Mode=ReadWrite;Foreign Keys=True";
 	using var conexion = new SqliteConnection(conexionString);
 	conexion.Open();
-	//Comando prueba
-        using var comando = conexion.CreateCommand();
-	comando.CommandText = "SELECT id_type, description FROM types";
-	
-	using var lector = comando.ExecuteReader();
-	
-	while (lector.Read()){
-	    int id = lector.GetInt32(0);
-            string descripcion = lector.GetString(1);
-            Console.WriteLine($"{id} - {descripcion}");
-	}
-	//
-	
+        
+	// Iteramos la lista para agregar los datos a la base
 	foreach(Ficha f in fichas){
+	    // Obtenemos los id
 	    long idP = performer(conexion, f.performer,2);
 	    long idA = album(conexion,f.apath, f.album, f.year);
-	    
+
+	    // Agregamos a rolas
+	    using(var cmdInsert = conexion.CreateCommand()){
+		cmdInsert.CommandText = "INSERT INTO rolas (id_performer, id_album, path, title, track, year, genre) VALUES (@idP,@idA, @path, @title, @track, @year, @genre)";
+		cmdInsert.Parameters.AddWithValue("@idP", idP);
+		cmdInsert.Parameters.AddWithValue("@idA", idA);
+		cmdInsert.Parameters.AddWithValue("@path", f.rpath);
+		cmdInsert.Parameters.AddWithValue("@title", f.titulo);
+		cmdInsert.Parameters.AddWithValue("@track", f.track);
+		cmdInsert.Parameters.AddWithValue("@year", f.year);
+		cmdInsert.Parameters.AddWithValue("@genre", f.genero);
+		cmdInsert.ExecuteNonQuery();
+	    }
 	}
     }
 
@@ -38,7 +40,6 @@ public class BaseDeDatos{
 	    using(var lector = comando.ExecuteReader()){
 		// Si nos dio algo es porque el performer ya existe, asi que terminamos
 		if (lector.Read()){
-		    Console.WriteLine(lector.GetInt64(0));
 		    return lector.GetInt64(0);
 		}
 	    }
@@ -56,8 +57,7 @@ public class BaseDeDatos{
 	    cmdId.Parameters.AddWithValue("@nombre", artista);
 	    using(var lector2 = cmdId.ExecuteReader()){
 		lector2.Read();
-		Console.WriteLine(lector2.GetInt64(0));
-		return lector2.GetInt64(0);
+	        return lector2.GetInt64(0);
 	    }
 	}
     }
@@ -72,7 +72,6 @@ public class BaseDeDatos{
 	    using(var lector = comando.ExecuteReader()){
 		// Si nos dio algo es porque el album ya existe, asi que terminamos
 		if (lector.Read()){
-		    Console.WriteLine(lector.GetInt64(0));
 		    return lector.GetInt64(0);
 		}
 	    }
@@ -91,8 +90,7 @@ public class BaseDeDatos{
 	    cmdId.Parameters.AddWithValue("@nombre", name);
 	    using(var lector2 = cmdId.ExecuteReader()){
 		lector2.Read();
-		Console.WriteLine(lector2.GetInt64(0));
-		return lector2.GetInt64(0);
+	        return lector2.GetInt64(0);
 	    }
 	}
     }
