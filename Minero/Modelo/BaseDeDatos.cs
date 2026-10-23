@@ -14,21 +14,41 @@ public class BaseDeDatos{
 	    long idP = performer(conexion, f.performer,2);
 	    long idA = album(conexion,f.apath, f.album, f.year);
 
-	    // Agregamos a rolas
-	    using(var cmdInsert = conexion.CreateCommand()){
-		cmdInsert.CommandText = "INSERT INTO rolas (id_performer, id_album, path, title, track, year, genre) VALUES (@idP,@idA, @path, @title, @track, @year, @genre)";
-		cmdInsert.Parameters.AddWithValue("@idP", idP);
-		cmdInsert.Parameters.AddWithValue("@idA", idA);
-		cmdInsert.Parameters.AddWithValue("@path", f.rpath);
-		cmdInsert.Parameters.AddWithValue("@title", f.titulo);
-		cmdInsert.Parameters.AddWithValue("@track", f.track);
-		cmdInsert.Parameters.AddWithValue("@year", f.year);
-		cmdInsert.Parameters.AddWithValue("@genre", f.genero);
-		cmdInsert.ExecuteNonQuery();
-	    }
+	    rola(conexion,idP,idA,f);
 	}
     }
 
+
+    private static void rola(SqliteConnection conexion, long idP, long idA, Ficha f){
+
+	using(var comando = conexion.CreateCommand()){
+	    // Le ponemos el texto
+	    comando.CommandText = "SELECT id_rola FROM rolas Where title = @titulo";
+	    comando.Parameters.AddWithValue("@titulo", f.titulo);
+	    // Vemos que nos dice
+	    using(var lector = comando.ExecuteReader()){
+		// Si nos dio algo es porque el performer ya existe, asi que terminamos
+		if (lector.Read()){
+		    return;
+		}
+	    }
+	}
+	
+	// Agregamos a rolas
+	using(var cmdInsert = conexion.CreateCommand()){
+	    cmdInsert.CommandText = "INSERT INTO rolas (id_performer, id_album, path, title, track, year, genre) VALUES (@idP,@idA, @path, @title, @track, @year, @genre)";
+	    cmdInsert.Parameters.AddWithValue("@idP", idP);
+	    cmdInsert.Parameters.AddWithValue("@idA", idA);
+	    cmdInsert.Parameters.AddWithValue("@path", f.rpath);
+	    cmdInsert.Parameters.AddWithValue("@title", f.titulo);
+	    cmdInsert.Parameters.AddWithValue("@track", f.track);
+	    cmdInsert.Parameters.AddWithValue("@year", f.year);
+	    cmdInsert.Parameters.AddWithValue("@genre", f.genero);
+	    cmdInsert.ExecuteNonQuery();
+	}
+    }
+
+    
     // Metodo para obtener el id del performer, ya sea buscandolo o insertandolo a la base de datos
     private static long performer(SqliteConnection conexion, string artista, int tipo){
 	// Creamos comando
@@ -66,8 +86,10 @@ public class BaseDeDatos{
 	// Creamos comando
 	using(var comando = conexion.CreateCommand()){
 	    // Le ponemos el texto
-	    comando.CommandText = "SELECT id_album FROM albums Where name = @nombre";
+	    comando.CommandText = "SELECT id_album FROM albums WHERE path = @path AND name = @nombre";
 	    comando.Parameters.AddWithValue("@nombre", name);
+	    comando.Parameters.AddWithValue("@path", path);
+	    
 	    // Vemos que nos dice
 	    using(var lector = comando.ExecuteReader()){
 		// Si nos dio algo es porque el album ya existe, asi que terminamos
