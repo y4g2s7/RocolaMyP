@@ -2,12 +2,36 @@ using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 
 public class BaseDeDatos{
-    public static void conectar(string ruta, List<Ficha> fichas){
-	// Nos conectamos a la base de datos
-	string conexionString = $"Data Source={ruta};Mode=ReadWrite;Foreign Keys=True";
-	using var conexion = new SqliteConnection(conexionString);
-	conexion.Open();
-        
+
+    public static SqliteConnection conectar(){
+	//Carpeta ~/.local/share/NombreApp
+        string carpetaDatos = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"rocola");
+
+        //Crearla en el disco (si ya existe, no hace nada)
+        Directory.CreateDirectory(carpetaDatos);
+
+        //Ruta del .db y revisar si ya existía ANTES de abrir la conexión
+        string rutaDb = Path.Combine(carpetaDatos, "musica.db");
+        bool existia = File.Exists(rutaDb);
+
+        //Abrir la conexión (si el archivo no existe, aquí se crea vacío)
+	string conexionString = $"Data Source={rutaDb};Mode=ReadWriteCreate;Foreign Keys=True";
+	var conexion = new SqliteConnection(conexionString);
+        conexion.Open();
+
+        //Si era nuevo, crear las tablas con el rolas.sql
+        if(!existia){
+            string rutaSql = Path.Combine(AppContext.BaseDirectory, "rolas.sql");
+            string script = File.ReadAllText(rutaSql);
+
+            using var comando = conexion.CreateCommand();
+            comando.CommandText = script;
+            comando.ExecuteNonQuery();
+        }
+        return conexion;
+    }
+    
+    public static void agregar(SqliteConnection conexion, List<Ficha> fichas){
 	// Iteramos la lista para agregar los datos a la base
 	foreach(Ficha f in fichas){
 	    // Obtenemos los id

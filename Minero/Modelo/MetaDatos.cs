@@ -26,6 +26,7 @@ public class MetaDatos{
 		var etiqueta = archivo.GetTag(TagTypes.Id3v2, false) as TagLib.Id3v2.Tag;
 		// Si el mp3 no tiene etiqueta o no es Id3v2.4 lo ignoramos
 		if(etiqueta == null || etiqueta.Version!=4){
+		    //Si no es especificamente id3v2.4 lo ignoramos
 		    Console.WriteLine($"ERROR {ruta}: sin ID3v2.4\n");
 		    return null;
 		}
@@ -67,6 +68,7 @@ public class MetaDatos{
 	    }
 	}
 	catch(Exception e){
+	    // Si hubo un error simplemente ignoramos el mp3
 	    Console.WriteLine(e.Message);
 	    Console.WriteLine($"Error al intentar leer el mp3 {ruta}\n");
 	    return null;
