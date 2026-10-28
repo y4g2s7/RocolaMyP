@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Interfaz.Views.MinarWindow"
+        Title="Minar música"
+        Width="450" Height="160"
+        WindowStartupLocation="CenterOwner">
+
+    <StackPanel Margin="16" Spacing="8">
+        <TextBlock Text="Escrbie la ruta de la carpeta con música:"/>
+        <TextBox x:Name="RutaBox" Watermark="/home/usuario/Música"/>
+        <Button Content="Minar"
+                HorizontalAlignment="Right"
+                Click="Minar_Click"/>
+    </StackPanel>
+</Window>
