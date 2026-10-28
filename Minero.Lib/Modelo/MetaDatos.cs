@@ -67,10 +67,10 @@ public class MetaDatos{
 		return f;
 	    }
 	}
-	catch(Exception e){
+	catch{
 	    // Si hubo un error simplemente ignoramos el mp3
-	    Console.WriteLine(e.Message);
-	    Console.WriteLine($"Error al intentar leer el mp3 {ruta}\n");
+	    // Console.WriteLine(e.Message);
+	    // Console.WriteLine($"Error al intentar leer el mp3 {ruta}\n");
 	    return null;
 	}
     }
