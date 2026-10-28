@@ -9,21 +9,36 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Interfaz">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
 
-    <DataGrid ItemsSource="{Binding canciones}"
-              AutoGenerateColumns="False"
-	      IsReadOnly="True">
-    	<DataGrid.Columns>
-		<DataGridTextColumn Header="Título"    Binding="{Binding titulo}"/>
-        	<DataGridTextColumn Header="Artista"   Binding="{Binding performer}"/>
-     		<DataGridTextColumn Header="Álbum"     Binding="{Binding album}"/>
-        	<DataGridTextColumn Header="Género"    Binding="{Binding genero}"/>
-    	</DataGrid.Columns>
-    </DataGrid>
+  <DataGrid ItemsSource="{Binding canciones}"
+            AutoGenerateColumns="False"
+	    IsReadOnly="True">
+
+    <!-- Estilos -->
+    <DataGrid.Styles>
+      <!-- Centra el texto de los encabezados -->
+      <Style Selector="DataGridColumnHeader">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      </Style>
+      
+      <!-- Centra el texto de las celdas -->
+      <Style Selector="DataGridCell TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+      </Style>
+    </DataGrid.Styles>
+
+    <DataGrid.Columns>
+      <DataGridTextColumn Header="Título"  Width="*"  Binding="{Binding titulo}"/>
+      <DataGridTextColumn Header="Artista" Width="*"  Binding="{Binding performer}"/>
+      <DataGridTextColumn Header="Álbum"   Width="*"  Binding="{Binding album}"/>
+      <DataGridTextColumn Header="Género"  Width="*"  Binding="{Binding genero}"/>
+    </DataGrid.Columns>
+  </DataGrid>
 
 </Window>
