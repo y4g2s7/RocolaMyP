@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.IO;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 namespace Interfaz.ViewModels;
@@ -31,6 +32,9 @@ public partial class MainWindowViewModel : ViewModelBase
         await Task.Run(() => minero.minar(ruta));
 	cargarCanciones();
     }
-    
+
+    // propiedad que comunica a la lista principal de canciones con la barra de cancion seleccionada
+    [ObservableProperty]
+    private CancionFila? _cancionSeleccionada;
     
 }

@@ -20,11 +20,35 @@
             Content="Minar"
             Margin="8"
             Click="AbrirVentanaMinar"/>
-    
-    <DataGrid ItemsSource="{Binding canciones}"
-              AutoGenerateColumns="False"
-	      IsReadOnly="True">
 
+    <Border DockPanel.Dock="Bottom"
+            Padding="30"
+            BorderThickness="0,1,0,0"
+            BorderBrush="Gray">
+      <StackPanel Orientation="Vertical" Spacing="16">
+	<Button Content="{Binding CancionSeleccionada.titulo}"
+		MinWidth="1"
+		FontSize="16"
+		Click="TituloClick"
+		Padding="6,6"/>
+	<Button Content="{Binding CancionSeleccionada.performer}"
+		MinWidth="1"
+		FontSize="13"
+		Click="PerformerClick"
+		Padding="6,6"/>
+	<Button Content="{Binding CancionSeleccionada.album}"
+		MinWidth="1"
+		FontSize="10"
+		Click="AlbumClick"
+		Padding="6,6"/>
+      </StackPanel>
+    </Border>
+    <DataGrid ItemsSource="{Binding canciones}"
+	      SelectedItem="{Binding CancionSeleccionada, Mode=TwoWay}"
+	      AutoGenerateColumns="False"
+	      IsReadOnly="True"
+	      GridLinesVisibility="Horizontal" 
+              HorizontalGridLinesBrush="#333333">
       <!-- Estilos -->
       <DataGrid.Styles>
 	<!-- Centra el texto de los encabezados -->

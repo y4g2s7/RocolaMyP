@@ -18,7 +18,7 @@ public class BaseDeDatos{
 	string conexionString = $"Data Source={rutaDb};Mode=ReadWriteCreate;Foreign Keys=True";
 	var conexion = new SqliteConnection(conexionString);
         conexion.Open();
-
+	
         //Si era nuevo, crear las tablas con el rolas.sql
         if(!existia){
             string rutaSql = Path.Combine(AppContext.BaseDirectory, "rolas.sql");

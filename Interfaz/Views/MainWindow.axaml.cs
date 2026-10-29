@@ -11,7 +11,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
-
+    
+    
     //Metodo que se activa cuando le dan click al boton de minar
     private async void AbrirVentanaMinar(object? sender, RoutedEventArgs e){
 	// Creamos la ventana para escribir la ruta
@@ -26,4 +27,9 @@ public partial class MainWindow : Window
 	    await vm.MinarAsync(ruta);
 	}
     }
+
+    private void TituloClick(object? sender, RoutedEventArgs e) { }
+    private void PerformerClick(object? sender, RoutedEventArgs e) { }
+    private void AlbumClick(object? sender, RoutedEventArgs e) { }
+    
 }
