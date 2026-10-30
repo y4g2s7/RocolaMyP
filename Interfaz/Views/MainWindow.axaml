@@ -22,38 +22,75 @@
             Click="AbrirVentanaMinar"/>
 
     <Border DockPanel.Dock="Bottom"
-            Padding="30"
+            Padding="15, 10"  
             BorderThickness="0,1,0,0"
-            BorderBrush="Gray">
-      <StackPanel Orientation="Vertical" Spacing="16">
-	<Button Content="{Binding CancionSeleccionada.titulo}"
-		MinWidth="1"
-		FontSize="16"
-		Click="TituloClick"
-		Padding="6,6"/>
-	<Button Content="{Binding CancionSeleccionada.performer}"
-		MinWidth="1"
-		FontSize="13"
-		Click="PerformerClick"
-		Padding="6,6"/>
-	<Button Content="{Binding CancionSeleccionada.album}"
-		MinWidth="1"
-		FontSize="10"
-		Click="AlbumClick"
-		Padding="6,6"/>
-      </StackPanel>
-    </Border>
+            BorderBrush="#FFFFFF"       
+            Background="#2B1D14">
+      
+	<!-- 1. Envolvemos todo en un Grid de 2 columnas -->
+	<Grid ColumnDefinitions="Auto, *">
+          
+          <!-- 2. La Imagen en la primera columna -->
+          <Image Grid.Column="0" 
+		 Source="avares://Interfaz/Assets/disco.png"
+		 Width="80" 
+		 Height="80" 
+		 Stretch="UniformToFill"
+		 Margin="0,0,15,0"
+		 VerticalAlignment="Center"/>
+	  
+          <!-- 3. Tus botones en la segunda columna -->
+          <StackPanel Grid.Column="1" 
+                      Orientation="Vertical" 
+                      Spacing="4"
+                      VerticalAlignment="Center">
+            
+            <Button Content="{Binding CancionSeleccionada.titulo}"
+                    MinWidth="1"
+                    FontSize="16"
+                    Click="TituloClick"
+                    Padding="6,6"
+		    Background="Transparent" 
+                    BorderThickness="0"
+                    HorizontalAlignment="Left" /> <!-- Alineado a la izquierda -->
+                    
+            <Button Content="{Binding CancionSeleccionada.performer}"
+                    MinWidth="1"
+                    FontSize="13"
+                    Click="PerformerClick"
+                    Padding="6,6"
+                    Background="Transparent" 
+                    BorderThickness="0"
+                    HorizontalAlignment="Left" />
+                    
+            <Button Content="{Binding CancionSeleccionada.album}"
+                    MinWidth="1"
+                    FontSize="10"
+                    Click="AlbumClick"
+                    Padding="6,6"
+                    Background="Transparent" 
+                    BorderThickness="0"
+                    HorizontalAlignment="Left" />
+          </StackPanel>
+	</Grid>
+      </Border>
+  
     <DataGrid ItemsSource="{Binding canciones}"
 	      SelectedItem="{Binding CancionSeleccionada, Mode=TwoWay}"
 	      AutoGenerateColumns="False"
 	      IsReadOnly="True"
 	      GridLinesVisibility="Horizontal" 
-              HorizontalGridLinesBrush="#333333">
+              HorizontalGridLinesBrush="#4D3E32"
+	      Background="#735D4B"      
+	      RowBackground="#735D4B"           
+	      Foreground="#FFFFFF">
       <!-- Estilos -->
       <DataGrid.Styles>
 	<!-- Centra el texto de los encabezados -->
 	<Style Selector="DataGridColumnHeader">
           <Setter Property="HorizontalContentAlignment" Value="Center"/>
+	   <Setter Property="Background" Value="#3D3128"/> 
+           <Setter Property="Foreground" Value="#F5F5DC"/> 
 	</Style>
 	
 	<!-- Centra el texto de las celdas -->
