@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 namespace Interfaz.ViewModels;
+using Interfaz.Models;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
@@ -17,7 +18,7 @@ public partial class MainWindowViewModel : ViewModelBase
     // para agregarlo a canciones
     public void cargarCanciones(){
 	canciones.Clear();
-	foreach (var c in CancionesBD.ObtenerCanciones()){
+	foreach (var c in BaseDatos.ObtenerCanciones()){
 	    canciones.Add(c);
 	}
     }
@@ -36,5 +37,9 @@ public partial class MainWindowViewModel : ViewModelBase
     // propiedad que comunica a la lista principal de canciones con la barra de cancion seleccionada
     [ObservableProperty]
     private CancionFila? _cancionSeleccionada;
-    
+
+    public Titulo? datosTitulo (CancionFila cf){
+	int id = cf.id;
+	return BaseDatos.getDatosTitulo(id);
+    }
 }

@@ -4,4 +4,5 @@ public class CancionFila{
     public string genero { get; set; }  = "";
     public string performer { get; set; } = "";
     public string album { get; set; } = "";
+    public int id { get; set; }
 } 

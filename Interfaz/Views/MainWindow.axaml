@@ -16,21 +16,23 @@
   </Design.DataContext>
 
   <DockPanel>
+    <!-- Boton para minar -->
     <Button DockPanel.Dock="Top"
             Content="Minar"
             Margin="8"
-            Click="AbrirVentanaMinar"/>
+	    Click="AbrirVentanaMinar"/>
 
+    <!-- Barra para la cancion actual -->
     <Border DockPanel.Dock="Bottom"
             Padding="15, 10"  
             BorderThickness="0,1,0,0"
             BorderBrush="#FFFFFF"       
             Background="#2B1D14">
       
-	<!-- 1. Envolvemos todo en un Grid de 2 columnas -->
+	<!-- Grid de 2 columnas -->
 	<Grid ColumnDefinitions="Auto, *">
           
-          <!-- 2. La Imagen en la primera columna -->
+          <!-- La Imagen en la primera columna -->
           <Image Grid.Column="0" 
 		 Source="avares://Interfaz/Assets/disco.png"
 		 Width="80" 
@@ -39,12 +41,13 @@
 		 Margin="0,0,15,0"
 		 VerticalAlignment="Center"/>
 	  
-          <!-- 3. Tus botones en la segunda columna -->
+          <!-- Botones en la segunda columna -->
           <StackPanel Grid.Column="1" 
                       Orientation="Vertical" 
                       Spacing="4"
                       VerticalAlignment="Center">
-            
+	    
+            <!-- Boton para el titulo de la cancion -->
             <Button Content="{Binding CancionSeleccionada.titulo}"
                     MinWidth="1"
                     FontSize="16"
@@ -52,7 +55,7 @@
                     Padding="6,6"
 		    Background="Transparent" 
                     BorderThickness="0"
-                    HorizontalAlignment="Left" /> <!-- Alineado a la izquierda -->
+                    HorizontalAlignment="Left" /> 
                     
             <Button Content="{Binding CancionSeleccionada.performer}"
                     MinWidth="1"
@@ -74,8 +77,10 @@
           </StackPanel>
 	</Grid>
       </Border>
-  
-    <DataGrid ItemsSource="{Binding canciones}"
+      <!-- Lista principal de las canciones conectada con la
+	   ObservableCollection<CancionFila> canciones de MainWindowViewModel	   
+	   Avisamos de la cancion seleccionada para la barra de abajo -->
+      <DataGrid ItemsSource="{Binding canciones}" 
 	      SelectedItem="{Binding CancionSeleccionada, Mode=TwoWay}"
 	      AutoGenerateColumns="False"
 	      IsReadOnly="True"
