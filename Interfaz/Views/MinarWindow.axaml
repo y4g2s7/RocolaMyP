@@ -6,7 +6,7 @@
         WindowStartupLocation="CenterOwner">
 
     <StackPanel Margin="16" Spacing="8">
-        <TextBlock Text="Escrbie la ruta de la carpeta con música:"/>
+        <TextBlock Text="Escribe la ruta de la carpeta con música:"/>
         <TextBox x:Name="RutaBox" Watermark="/home/usuario/Música"/>
         <Button Content="Minar"
                 HorizontalAlignment="Right"
