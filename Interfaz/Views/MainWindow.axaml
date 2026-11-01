@@ -29,28 +29,39 @@
             BorderBrush="#FFFFFF"       
             Background="#2B1D14">
       
-	<!-- Grid de 2 columnas -->
-	<Grid ColumnDefinitions="Auto, *">
+	<!-- Grid de 3 columnas -->
+	<Grid ColumnDefinitions="Auto, Auto *">
           
           <!-- La Imagen en la primera columna -->
           <Image Grid.Column="0" 
 		 Source="avares://Interfaz/Assets/disco.png"
-		 Width="80" 
-		 Height="80" 
+		 Width="120" 
+		 Height="120" 
 		 Stretch="UniformToFill"
 		 Margin="0,0,15,0"
 		 VerticalAlignment="Center"/>
-	  
+	  <!-- Columna 1: NUEVA - Iconos pequeños apilados -->
+        <StackPanel Grid.Column="1" 
+                    Orientation="Vertical" 
+                    Spacing="8" 
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"> <!-- Margen a la derecha para separar del texto -->
+            
+            <!-- Nota: Asegúrate de tener estas imágenes en tu carpeta Assets -->
+            <Image Source="avares://Interfaz/Assets/notas.png" Width="40" Height="40" />
+            <Image Source="avares://Interfaz/Assets/microfono.png" Width="35" Height="45" />
+            <Image Source="avares://Interfaz/Assets/carpeta.png" Width="45" Height="45" />
+        </StackPanel>
           <!-- Botones en la segunda columna -->
-          <StackPanel Grid.Column="1" 
+          <StackPanel Grid.Column="2" 
                       Orientation="Vertical" 
-                      Spacing="4"
+                      Spacing="18"
                       VerticalAlignment="Center">
 	    
             <!-- Boton para el titulo de la cancion -->
             <Button Content="{Binding CancionSeleccionada.titulo}"
                     MinWidth="1"
-                    FontSize="16"
+                    FontSize="18"
                     Click="TituloClick"
                     Padding="6,6"
 		    Background="Transparent" 
@@ -59,7 +70,7 @@
                     
             <Button Content="{Binding CancionSeleccionada.performer}"
                     MinWidth="1"
-                    FontSize="13"
+                    FontSize="15"
                     Click="PerformerClick"
                     Padding="6,6"
                     Background="Transparent" 
@@ -68,7 +79,7 @@
                     
             <Button Content="{Binding CancionSeleccionada.album}"
                     MinWidth="1"
-                    FontSize="10"
+                    FontSize="12"
                     Click="AlbumClick"
                     Padding="6,6"
                     Background="Transparent" 

@@ -39,7 +39,7 @@ public partial class MainWindow : Window
 	Titulo? informacion = vm.datosTitulo(cancion);
 	if(informacion == null) return;
 	
-	new TituloWindow(informacion).Show(this); 
+	new TituloWindow(informacion).ShowDialog(this); 
     }
     private void PerformerClick(object? sender, RoutedEventArgs e) { }
     private void AlbumClick(object? sender, RoutedEventArgs e) { }
