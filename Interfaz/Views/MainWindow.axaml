@@ -16,12 +16,17 @@
   </Design.DataContext>
 
   <DockPanel>
-    <!-- Boton para minar -->
-    <Button DockPanel.Dock="Top"
-            Content="Minar"
-            Margin="8"
-	    Click="AbrirVentanaMinar"/>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
 
+      <Button Content="Minar"
+              Margin="4"
+              Click="AbrirVentanaMinar"/>
+      
+      <Button Content="Registrar Artista"
+              Margin="4"
+              Click="RegistrarArtistaClick"/>
+    </StackPanel>
+    
     <!-- Barra para la cancion actual -->
     <Border DockPanel.Dock="Bottom"
             Padding="15, 10"  

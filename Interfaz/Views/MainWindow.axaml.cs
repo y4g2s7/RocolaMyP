@@ -73,6 +73,18 @@ public partial class MainWindow : Window
 	}
 	
     }
+    
     private void AlbumClick(object? sender, RoutedEventArgs e) { }
     
+    private void RegistrarArtistaClick(object? sender, RoutedEventArgs e){
+	var vm = DataContext as MainWindowViewModel;
+	// Obtenemos la cancion seleccionada que vive en MainWindowViewModel
+	var cancion = vm?.CancionSeleccionada;
+	if (cancion == null || vm == null) return;
+	Artista? artista = vm.datosArtista(cancion);
+	if(artista == null) return;
+	var ventana = new RegistrarArtistaWindow();
+	ventana.DataContext = artista; 
+	ventana.ShowDialog(this);
+    } 
 }

@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	x:Class="Interfaz.Views.BotonesArriba.RegistrarArtistaWindow"
+	xmlns:models="using:Interfaz.Models"
+	x:DataType="models:Artista"
+	Title="Registrar Artista"
+	Width="350" Height="350"
+	Background="#2B1D14">
+  <DockPanel>
+    <StackPanel Margin="20" Spacing="15">
+      <TextBlock Text="{Binding seudonimo, StringFormat='El artista {0} es:'}" 
+           FontWeight="Bold"/>
+      <TextBlock Text="{Binding TipoTexto}" FontSize="18" Margin="0,0,0,20"/>
+
+      <TextBlock Text="¿Qué deseas hacer?"/>
+
+    <Button Content="Convertir en Persona" 
+            Click="ConvertirAPersonaClick"
+            Background="#4E342E" Foreground="#F5F5DC" Padding="10"/>
+
+    <Button Content="Convertir en Banda" 
+            Click="ConvertirABandaClick"
+            Background="#4E342E" Foreground="#F5F5DC" Padding="10"/>
+
+    <Button Content="Marcar como Desconocido" 
+            Click="ConvertirADesconocidoClick"
+            Background="#4E342E" Foreground="#F5F5DC" Padding="10"/>
+
+    <Button Content="SALIR" 
+	    Click = "CerrarVentana"
+	    HorizontalAlignment="Right" 
+            HorizontalContentAlignment="Center"
+            Background="#8A3220" 
+            Foreground="#F5F5DC" 
+            Padding="10"/>
+    
+    </StackPanel>
+    
+  </DockPanel>
+  
+</Window>
+ 

@@ -7,4 +7,14 @@ public class Artista{
     public int tipo  { get; set;}
     public string inicioB { get; set;} = "";
     public string finB { get; set;} = "";
+    public string TipoTexto{
+        get{
+            if(tipo == 0){
+		return "Persona";
+            } if(tipo== 1){
+		return "Banda";
+            }return "Desconocido";
+        }
+    }
+    
 }
