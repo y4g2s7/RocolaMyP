@@ -79,4 +79,77 @@ public class BaseDatos{
 	}
 	return null;
     }
+    
+    public static Artista? getDatosArtista(int idRola){
+	using var conexion = conectar();
+
+	// Obtenemos el id_type y el nombre desde la tabla performers
+	int tipoPerformer = 2; // 2 = Unknown por defecto
+	string nombrePerformer = "";
+
+	using (var comando = conexion.CreateCommand()){
+	    comando.CommandText = @"
+            SELECT p.id_type, p.name 
+            FROM rolas r
+            JOIN performers p ON r.id_performer = p.id_performer
+            WHERE r.id_rola = @id";
+            
+	    comando.Parameters.AddWithValue("@id", idRola);
+
+	    using(var reader = comando.ExecuteReader()){
+		if(reader.Read()){
+		    tipoPerformer = reader.IsDBNull(0) ? 2 : reader.GetInt32(0);
+		    nombrePerformer = reader.IsDBNull(1) ? "" : reader.GetString(1);
+		}
+		else{
+		    // Si no se encontro
+		    return null;
+		}
+	    }
+	}
+
+	//Creamos el objeto Artista base (esto aplica para todos los casos)
+	var artista = new Artista{
+	    tipo = tipoPerformer,
+	    //El nombre del performer siempre va al seudónimo (sea Unknown, Banda o Persona)
+	    seudonimo = nombrePerformer 
+	};
+
+	// Dependiendo del tipo, buscamos datos extra por NOMBRE
+	// ES PERSONA
+	if (tipoPerformer == 0){
+	    using(var comando = conexion.CreateCommand()){
+		// Buscamos en persons usando el nombre del performer (asumiendo que se guardó en stage_name)
+		comando.CommandText = "SELECT real_name, birth_date, death_date FROM persons WHERE stage_name = @name";
+		comando.Parameters.AddWithValue("@name", nombrePerformer);
+
+		using (var reader = comando.ExecuteReader()){
+		    if (reader.Read()){
+			artista.nombreA = reader.IsDBNull(0) ? "" : reader.GetString(0);
+			artista.cumpleañosA = reader.IsDBNull(1) ? "" : reader.GetString(1);
+			artista.muerteA = reader.IsDBNull(2) ? "" : reader.GetString(2);
+		    }
+		}
+	    }
+	}
+	// ES BANDA
+	else if(tipoPerformer == 1){
+	    using(var comando = conexion.CreateCommand())
+	    {
+		// Buscamos en groups usando el nombre del performer
+		comando.CommandText = "SELECT start_date, end_date FROM groups WHERE name = @name";
+		comando.Parameters.AddWithValue("@name", nombrePerformer);
+
+		using(var reader = comando.ExecuteReader()){
+		    if(reader.Read()){
+			artista.inicioB = reader.IsDBNull(0) ? "" : reader.GetString(0);
+			artista.finB = reader.IsDBNull(1) ? "" : reader.GetString(1);
+		    }
+		}
+	    }
+	}
+	// Si es tipo 2 (Unknown), el codigo no hace nada mas
+	// Se queda solo con el seudonimo que ya le asignamos en el paso 2
+	return artista;
+    }
 }

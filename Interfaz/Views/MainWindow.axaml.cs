@@ -3,6 +3,10 @@ using Avalonia.Interactivity;
 using System;
 using Interfaz.ViewModels;
 using Interfaz.Models;
+using Interfaz.Views.BotonesArriba;
+using Interfaz.Views.BarraCancionActual.Title;
+using Interfaz.Views.BarraCancionActual.Artista;
+
 namespace Interfaz.Views;
 
 public partial class MainWindow : Window
@@ -41,7 +45,34 @@ public partial class MainWindow : Window
 	
 	new TituloWindow(informacion).ShowDialog(this); 
     }
-    private void PerformerClick(object? sender, RoutedEventArgs e) { }
+    
+    private void PerformerClick(object? sender, RoutedEventArgs e) {
+	var vm = DataContext as MainWindowViewModel;
+	// Obtenemos la cancion seleccionada que vive en MainWindowViewModel
+	var cancion = vm?.CancionSeleccionada;
+	if (cancion == null || vm == null) return;
+	
+	Artista? artista = vm.datosArtista(cancion);
+	if(artista == null) return;
+	// Dependiendo del tipo abrimos que ventana
+	if(artista.tipo==0){
+	    var ventana = new PersonaWindow();
+            // Le pasamos los datos del artista a la ventana
+            ventana.DataContext = artista; 
+            ventana.ShowDialog(this);
+	    
+	} else if(artista.tipo==1){
+	    var ventana = new BandaWindow();
+            ventana.DataContext = artista;
+            ventana.ShowDialog(this);
+	    
+	} else if(artista.tipo==2){
+	    var ventana = new DesconocidoWindow();
+            ventana.DataContext = artista;
+            ventana.ShowDialog(this);
+	}
+	
+    }
     private void AlbumClick(object? sender, RoutedEventArgs e) { }
     
 }

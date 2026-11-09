@@ -1,0 +1,59 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Interfaz.Views.BarraCancionActual.Artista.DesconocidoWindow"
+	xmlns:models="using:Interfaz.Models"
+	x:DataType="models:Artista"
+	Title="Información Artista"
+	Width="500" Height="400"
+        Background="#2B1D14">
+  <DockPanel>
+  
+    <StackPanel DockPanel.Dock="Top" Margin="20">
+      
+      <TextBlock Text="Presiona para editar"
+		 Foreground="#FFFFFF" 
+                 Margin="0,0,0,8"
+		 HorizontalAlignment="Center"/>
+   
+    </StackPanel>
+
+
+    <Grid DockPanel.Dock="Bottom" Margin="20">
+      <Grid.RowDefinitions>
+
+	<RowDefinition Height="*" />
+	<RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+    
+      <!-- Contenido de arriba (Imagen y Botón de Artista) -->
+      <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<!-- Imagenes en la carpeta Assets -->
+	<Image Source="avares://Interfaz/Assets/desconocido.png" Width="150" Height="150" />
+      
+	<Button Content="{Binding seudonimo, StringFormat='Artista: {0}'}" 
+		HorizontalAlignment="Stretch" 
+		HorizontalContentAlignment="Center"
+                Background="#4E342E" 
+                Foreground="#F5F5DC" 
+                Padding="10"/>
+      </StackPanel>
+
+      <!-- Botón SALIR al fondo de la ventana -->
+      <Button Grid.Row="1" 
+              Content="SALIR" 
+              Click="CerrarVentana"
+              HorizontalAlignment="Right" 
+              HorizontalContentAlignment="Center"
+              Background="#8A3220" 
+              Foreground="#F5F5DC" 
+              Padding="10"
+              Margin="0,20,0,0"/> 
+    </Grid>
+    
+    
+   </DockPanel>
+  
+</Window>

@@ -1,6 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="Interfaz.Views.MinarWindow"
+        x:Class="Interfaz.Views.BotonesArriba.MinarWindow"
         Title="Minar música"
         Width="450" Height="160"
         WindowStartupLocation="CenterOwner">

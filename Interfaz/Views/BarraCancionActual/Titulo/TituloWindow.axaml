@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Interfaz.Views.TituloWindow"
+        x:Class="Interfaz.Views.BarraCancionActual.Title.TituloWindow"
 	xmlns:models="using:Interfaz.Models"
 	x:DataType="models:Titulo"
 	Title="Información"
@@ -23,7 +23,8 @@
 
     <StackPanel DockPanel.Dock="Bottom" Margin="20, 0, 20, 20">
         <Button Content="SALIR" 
-                HorizontalAlignment="Right" 
+		Click = "CerrarVentana"
+		HorizontalAlignment="Right" 
                 HorizontalContentAlignment="Center"
                 Background="#8A3220" 
                 Foreground="#F5F5DC" 
@@ -36,9 +37,9 @@
                   Orientation="Vertical" 
                   Spacing="4" 
                   VerticalAlignment="Center"
-                  Margin="0,0,7,0"> <!-- Margen a la derecha para separar del texto -->
+                  Margin="0,0,7,0">
         
-        <!-- Nota: Asegúrate de tener estas imágenes en tu carpeta Assets -->
+        <!-- Imagenes en la carpeta Assets -->
         <Image Source="avares://Interfaz/Assets/notas.png" Width="50" Height="50" />
         <Image Source="avares://Interfaz/Assets/track.png" Width="55" Height="55" />
         <Image Source="avares://Interfaz/Assets/calendario.png" Width="70" Height="70" />

@@ -42,4 +42,9 @@ public partial class MainWindowViewModel : ViewModelBase
 	int id = cf.id;
 	return BaseDatos.getDatosTitulo(id);
     }
+
+    public Artista? datosArtista(CancionFila cf){
+	int id = cf.id;
+	return BaseDatos.getDatosArtista(id);
+    }
 }

@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Interactivity;
 
-namespace Interfaz.Views;
+namespace Interfaz.Views.BotonesArriba;
 
 public partial class MinarWindow : Window
 {
