@@ -29,9 +29,7 @@ public partial class RegistrarArtistaWindow : Window
 	// Si es distinto de null, algo cambio
 	if(artistaModificado != null){
 	    MainWindowViewModel.agregarPersona(artistaActual, artistaModificado);
-	   // BaseDatos.eliminarBanda(artistaActual);
-	   // BaseDatos.registrarArtista(artistaModificado);
-           Close(); 
+	    Close(); 
 	}
     }
     

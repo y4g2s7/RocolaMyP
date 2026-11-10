@@ -25,6 +25,11 @@
       <Button Content="Registrar Artista"
               Margin="4"
               Click="RegistrarArtistaClick"/>
+
+      <Button Content="Agregar Persona"
+              Margin="4"
+              Click="AgregarPersonaClick"/>
+      
     </StackPanel>
     
     <!-- Barra para la cancion actual -->

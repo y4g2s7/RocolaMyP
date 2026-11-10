@@ -99,4 +99,13 @@ public partial class MainWindow : Window
 	ventana.DataContext = artista; 
 	ventana.ShowDialog(this);
     } 
+
+    private async void AgregarPersonaClick(object? sender, RoutedEventArgs e){
+	var ventanaNuevaPersona = new AgregarPersonaWindow();
+	ventanaNuevaPersona.DataContext = new Artista();
+	var artistaNuevo = await ventanaNuevaPersona.ShowDialog<Artista>(this);
+	if(artistaNuevo != null){
+	    MainWindowViewModel.agregarNuevaPersona(artistaNuevo); 
+	}
+    }
 }

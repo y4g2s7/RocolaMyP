@@ -52,7 +52,7 @@ public partial class MainWindowViewModel : ViewModelBase
 	BaseDatos.eliminarBanda(artistaActual);
 	BaseDatos.registrarArtista(artistaModificado);   
     }
-
+    
     public static void agregarBanda(Artista artistaActual, Artista artistaModificado){
 	BaseDatos.eliminarPersona(artistaActual);
 	BaseDatos.registrarArtista(artistaModificado);
@@ -67,5 +67,9 @@ public partial class MainWindowViewModel : ViewModelBase
     public Album? datosAlbum(CancionFila cf){
 	int id = cf.id;
 	return BaseDatos.getDatosAlbum(id);
+    }
+
+    public static void agregarNuevaPersona(Artista artista){
+        BaseDatos.registrarArtista(artista);   
     }
 }
