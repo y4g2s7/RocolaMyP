@@ -10,4 +10,8 @@ public partial class BandaWindow : Window
     {
         InitializeComponent();
     }
+
+    private void CerrarVentana(object? sender, Avalonia.Interactivity.RoutedEventArgs e){
+        Close(); 
+    }
 }

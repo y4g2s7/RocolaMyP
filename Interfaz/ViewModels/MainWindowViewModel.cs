@@ -47,4 +47,20 @@ public partial class MainWindowViewModel : ViewModelBase
 	int id = cf.id;
 	return BaseDatos.getDatosArtista(id);
     }
+
+    public static void agregarPersona(Artista artistaActual, Artista artistaModificado){
+	BaseDatos.eliminarBanda(artistaActual);
+	BaseDatos.registrarArtista(artistaModificado);   
+    }
+
+    public static void agregarBanda(Artista artistaActual, Artista artistaModificado){
+	BaseDatos.eliminarPersona(artistaActual);
+	BaseDatos.registrarArtista(artistaModificado);
+    }
+
+    public static void agregarDesconocido(Artista artistaActual, Artista artistaModificado){
+	BaseDatos.eliminarBanda(artistaActual);
+	BaseDatos.eliminarPersona(artistaActual);
+	BaseDatos.registrarArtista(artistaModificado);
+    }
 }

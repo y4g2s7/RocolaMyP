@@ -4,6 +4,74 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Interfaz.Views.BarraCancionActual.Artista.BandaWindow"
-        Title="BandaWindow">
-  Welcome to Avalonia!
+        Title="Banda"
+	xmlns:models="using:Interfaz.Models"
+	x:DataType="models:Artista"
+	Width="530" Height="320"
+        Background="#2B1D14">
+  <DockPanel>
+  
+    <StackPanel DockPanel.Dock="Top" Margin="20">
+      
+      <TextBlock Text="Presiona para editar"
+		 Foreground="#FFFFFF" 
+                 Margin="0,0,0,8"
+		 HorizontalAlignment="Center"/>
+   
+    </StackPanel>
+
+
+    <StackPanel DockPanel.Dock="Bottom" Margin="20, 0, 20, 20">
+        <Button Content="SALIR" 
+		Click = "CerrarVentana"
+		HorizontalAlignment="Right" 
+                HorizontalContentAlignment="Center"
+                Background="#8A3220" 
+                Foreground="#F5F5DC" 
+                Padding="10"/>
+    </StackPanel>
+    
+    <Grid ColumnDefinitions="Auto, *" Margin="20">
+
+      <StackPanel Grid.Column="0" 
+                  Orientation="Vertical" 
+                  Spacing="4" 
+                  VerticalAlignment="Center"
+                  Margin="0,0,7,0">
+        
+        <!-- Imagenes en la carpeta Assets -->
+        
+        <Image Source="avares://Interfaz/Assets/banda.png" Width="150" Height="155" />
+      </StackPanel>
+        <!-- Botones en la segunda columna -->
+        <StackPanel Grid.Column="1" 
+                    Orientation="Vertical" 
+                    Spacing="18"
+                    VerticalAlignment="Center">
+	  
+	    <Button Content="{Binding seudonimo, StringFormat='Nombre: {0}'}" 
+                    HorizontalAlignment="Stretch" 
+                    HorizontalContentAlignment="Center"
+                    Background="#4E342E" 
+                    Foreground="#F5F5DC" 
+                    Padding="10"/>
+	    
+            <Button Content="{Binding inicioB, StringFormat='Creación: {0}'}" 
+                    HorizontalAlignment="Stretch" 
+                    HorizontalContentAlignment="Center"
+                    Background="#4E342E" 
+                    Foreground="#F5F5DC" 
+                    Padding="10"/>
+	    
+            <Button Content="{Binding finB, StringFormat='Separación: {0}'}" 
+                    HorizontalAlignment="Stretch" 
+                    HorizontalContentAlignment="Center"
+                    Background="#4E342E"
+		    Foreground="#F5F5DC" 
+                    Padding="10"/>
+            
+	</StackPanel>
+    </Grid>
+  </DockPanel>
+  
 </Window>

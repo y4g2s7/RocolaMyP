@@ -18,6 +18,7 @@ public class Artista{
     }
     public int id{ get; set;}
 
+    // Propiedades para saber que boton habilitar al registrar un artista
     public bool PuedeSerPersona => tipo != 0;
     public bool PuedeSerBanda => tipo != 1;
     public bool PuedeSerDesconocido => tipo != 2;

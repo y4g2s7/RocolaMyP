@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Interactivity;
 using Interfaz.Models;
-
+using Interfaz.ViewModels;
 namespace Interfaz.Views.BotonesArriba;
 
 public partial class RegistrarArtistaWindow : Window
@@ -27,9 +27,10 @@ public partial class RegistrarArtistaWindow : Window
 	var artistaModificado = await ventanaPersona.ShowDialog<Artista>(this);
 
 	// Si es distinto de null, algo cambio
-	if (artistaModificado != null){
-	   BaseDatos.eliminarBanda(artistaActual);
-	   BaseDatos.registrarArtista(artistaModificado);
+	if(artistaModificado != null){
+	    MainWindowViewModel.agregarPersona(artistaActual, artistaModificado);
+	   // BaseDatos.eliminarBanda(artistaActual);
+	   // BaseDatos.registrarArtista(artistaModificado);
            Close(); 
 	}
     }
@@ -46,9 +47,10 @@ public partial class RegistrarArtistaWindow : Window
 	var artistaModificado = await ventanaBanda.ShowDialog<Artista>(this);
 
 	// Si es distinto de null, algo cambio
-	if (artistaModificado != null){
-	    BaseDatos.eliminarPersona(artistaActual);
-	    BaseDatos.registrarArtista(artistaModificado);
+	if(artistaModificado != null){
+	    MainWindowViewModel.agregarBanda(artistaActual, artistaModificado);
+	    // BaseDatos.eliminarPersona(artistaActual);
+	    // BaseDatos.registrarArtista(artistaModificado);
            Close(); 
 	}
 	
@@ -67,9 +69,10 @@ public partial class RegistrarArtistaWindow : Window
 
 	// Si es distinto de null, algo cambio
 	if (artistaModificado != null){
-	    BaseDatos.eliminarBanda(artistaActual);
-	    BaseDatos.eliminarPersona(artistaActual);
-	    BaseDatos.registrarArtista(artistaModificado);
+	    MainWindowViewModel.agregarDesconocido(artistaActual, artistaModificado);
+	    // BaseDatos.eliminarBanda(artistaActual);
+	    // BaseDatos.eliminarPersona(artistaActual);
+	    // BaseDatos.registrarArtista(artistaModificado);
            Close(); 
 	}
     }
