@@ -16,5 +16,5 @@ public class Artista{
             }return "Desconocido";
         }
     }
-    
+    public int id{ get; set;}
 }

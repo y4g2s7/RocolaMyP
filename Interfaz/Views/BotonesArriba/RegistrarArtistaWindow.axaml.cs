@@ -28,7 +28,7 @@ public partial class RegistrarArtistaWindow : Window
 
 	// Si es distinto de null, algo cambio
 	if (artistaModificado != null){
-	   // GuardarEnBaseDeDatos(artistaModificado);
+	   BaseDatos.registrarArtista(artistaModificado);
            Close(); 
 	}
     }

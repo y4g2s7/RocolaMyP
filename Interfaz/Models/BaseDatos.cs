@@ -86,10 +86,11 @@ public class BaseDatos{
 	// Obtenemos el id_type y el nombre desde la tabla performers
 	int tipoPerformer = 2; // 2 = Unknown por defecto
 	string nombrePerformer = "";
-
+	int idPerformer = 0;
+	
 	using (var comando = conexion.CreateCommand()){
 	    comando.CommandText = @"
-            SELECT p.id_type, p.name 
+            SELECT p.id_performer, p.id_type, p.name 
             FROM rolas r
             JOIN performers p ON r.id_performer = p.id_performer
             WHERE r.id_rola = @id";
@@ -98,8 +99,9 @@ public class BaseDatos{
 
 	    using(var reader = comando.ExecuteReader()){
 		if(reader.Read()){
-		    tipoPerformer = reader.IsDBNull(0) ? 2 : reader.GetInt32(0);
-		    nombrePerformer = reader.IsDBNull(1) ? "" : reader.GetString(1);
+		    idPerformer = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
+		    tipoPerformer = reader.IsDBNull(0) ? 2 : reader.GetInt32(1);
+		    nombrePerformer = reader.IsDBNull(1) ? "" : reader.GetString(2);
 		}
 		else{
 		    // Si no se encontro
@@ -110,6 +112,7 @@ public class BaseDatos{
 
 	//Creamos el objeto Artista base (esto aplica para todos los casos)
 	var artista = new Artista{
+	    id = idPerformer,
 	    tipo = tipoPerformer,
 	    //El nombre del performer siempre va al seudónimo (sea Unknown, Banda o Persona)
 	    seudonimo = nombrePerformer 
@@ -151,5 +154,34 @@ public class BaseDatos{
 	// Si es tipo 2 (Unknown), el codigo no hace nada mas
 	// Se queda solo con el seudonimo que ya le asignamos en el paso 2
 	return artista;
+    }
+
+    public static void registrarArtista(Artista artista){
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+	
+	// Actualizamos el nombre y el tipo en la tabla performers
+	comando.CommandText = @"
+        UPDATE performers 
+        SET name = @nombre, id_type = @tipo 
+        WHERE id_performer = @id";
+        
+	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
+	comando.Parameters.AddWithValue("@tipo", artista.tipo);
+	comando.Parameters.AddWithValue("@id", artista.id);
+	
+	comando.ExecuteNonQuery();
+
+	// Si es persona actualizamos
+	if(artista.tipo == 0){
+	    using(var cmdInsert = conexion.CreateCommand()){
+		cmdInsert.CommandText = "INSERT INTO persons (stage_name, real_name, birth_date, death_date) VALUES (@stage,@real, @birth, @death)";
+		cmdInsert.Parameters.AddWithValue("@stage", artista.seudonimo);
+		cmdInsert.Parameters.AddWithValue("@real", artista.nombreA);
+		cmdInsert.Parameters.AddWithValue("@birth", artista.cumpleañosA);
+		cmdInsert.Parameters.AddWithValue("@death", artista.muerteA);
+		cmdInsert.ExecuteNonQuery();
+	    }
+	}
     }
 }
