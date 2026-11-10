@@ -174,6 +174,20 @@ public class BaseDatos{
 
 	// Si es persona actualizamos
 	if(artista.tipo == 0){
+
+	    using(var comandoVerifica = conexion.CreateCommand()){
+		// Le ponemos el texto
+		comandoVerifica.CommandText = "SELECT id_person FROM persons Where stage_name = @nombre";
+		comandoVerifica.Parameters.AddWithValue("@nombre", artista.seudonimo);
+		// Vemos que nos dice
+		using(var lector = comandoVerifica.ExecuteReader()){
+		    // Si nos dio algo es porque el performer ya existe, asi que terminamos
+		    if (lector.Read()){
+		        return;
+		    }
+		}
+	    }
+	    
 	    using(var cmdInsert = conexion.CreateCommand()){
 		cmdInsert.CommandText = "INSERT INTO persons (stage_name, real_name, birth_date, death_date) VALUES (@stage,@real, @birth, @death)";
 		cmdInsert.Parameters.AddWithValue("@stage", artista.seudonimo);
