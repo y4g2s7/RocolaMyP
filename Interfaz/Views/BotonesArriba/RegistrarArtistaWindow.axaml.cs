@@ -16,7 +16,7 @@ public partial class RegistrarArtistaWindow : Window
     private async void ConvertirAPersonaClick(object? sender, RoutedEventArgs e){
 	var artistaActual = DataContext as Artista;
 	if (artistaActual == null) return;
-
+	
 	// Abrimos la ventana de persona
 	var ventanaPersona = new RegistrarPersonaWindow();
 	// Le pasamos los datos actuales
@@ -33,7 +33,25 @@ public partial class RegistrarArtistaWindow : Window
 	}
     }
     
-    private void ConvertirABandaClick(object? sender, RoutedEventArgs e) { }
+    private async void ConvertirABandaClick(object? sender, RoutedEventArgs e) {
+	var artistaActual = DataContext as Artista;
+	if (artistaActual == null) return;
+
+	var ventanaBanda = new RegistrarBandaWindow();
+	ventanaBanda.DataContext = artistaActual; 
+
+	// Esperamos a que el usuario guarde (true) o cancele (false)
+	// Si guarda, nos devuelve el artista modificado
+	var artistaModificado = await ventanaBanda.ShowDialog<Artista>(this);
+
+	// Si es distinto de null, algo cambio
+	if (artistaModificado != null){
+	   BaseDatos.registrarArtista(artistaModificado);
+           Close(); 
+	}
+	
+    }
+    
     private void ConvertirADesconocidoClick(object? sender, RoutedEventArgs e) { }
     private void CerrarVentana(object? sender, Avalonia.Interactivity.RoutedEventArgs e){
         Close(); 

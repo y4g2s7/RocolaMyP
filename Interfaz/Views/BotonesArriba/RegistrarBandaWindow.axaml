@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Interfaz.Views.BotonesArriba.RegistrarBandaWindow"
+	xmlns:models="using:Interfaz.Models"
+	x:DataType="models:Artista"
+	Title="Banda"
+	Width="350" Height="350"
+	Background="#2B1D14">
+  
+  <StackPanel Margin="20" Spacing="10">
+    <TextBlock Text="Nombre:" Foreground="#F5F5DC"/>
+    <!-- Con TwoWay si el usuario escribe, se actualiza en el objeto Artista -->
+    <TextBox Text="{Binding seudonimo, Mode=TwoWay}" />
+    
+    <TextBlock Text="Fecha de Creacion:" Foreground="#F5F5DC"/>
+    <TextBox Text="{Binding inicioB, Mode=TwoWay}" />
+    
+    <TextBlock Text="Fecha de Separacion:" Foreground="#F5F5DC"/>
+    <TextBox Text="{Binding finB, Mode=TwoWay}" />
+    
+    <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" Margin="0,20,0,0">
+      <Button Content="Cancelar"
+	      Click="CancelarClick"
+	      Background="#8A3220" 
+	      Foreground="#F5F5DC"/>
+
+      <Button Content="Guardar"
+	      Click="GuardarClick"
+	      Background="#4E342E"
+	      Foreground="#F5F5DC"/>
+    </StackPanel>
+  </StackPanel>
+  
+</Window>
+ 

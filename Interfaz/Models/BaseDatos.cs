@@ -196,6 +196,28 @@ public class BaseDatos{
 		cmdInsert.Parameters.AddWithValue("@death", artista.muerteA);
 		cmdInsert.ExecuteNonQuery();
 	    }
-	}
+	} if(artista.tipo==1){
+	    
+	    using(var comandoVerifica = conexion.CreateCommand()){
+		// Le ponemos el texto
+		comandoVerifica.CommandText = "SELECT id_group FROM groups Where name = @nombre";
+		comandoVerifica.Parameters.AddWithValue("@nombre", artista.seudonimo);
+		// Vemos que nos dice
+		using(var lector = comandoVerifica.ExecuteReader()){
+		    // Si nos dio algo es porque el performer ya existe, asi que terminamos
+		    if (lector.Read()){
+		        return;
+		    }
+		}
+	    }
+	    
+	    using(var cmdInsert = conexion.CreateCommand()){
+		cmdInsert.CommandText = "INSERT INTO groups (name, start_date, end_date) VALUES (@name,@start, @end)";
+		cmdInsert.Parameters.AddWithValue("@name", artista.seudonimo);
+		cmdInsert.Parameters.AddWithValue("@start", artista.inicioB);
+		cmdInsert.Parameters.AddWithValue("@end", artista.finB);
+		cmdInsert.ExecuteNonQuery();
+	    }
+	} 
     }
 }
