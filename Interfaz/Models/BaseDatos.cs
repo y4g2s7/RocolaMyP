@@ -251,4 +251,30 @@ public class BaseDatos{
 	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
         comando.ExecuteNonQuery();
     }
+
+    public static Album? getDatosAlbum(int id){
+	using var conexion = conectar();
+	
+	using (var comando = conexion.CreateCommand()){
+	    comando.CommandText = @"
+            SELECT a.name, a.year 
+            FROM rolas r
+            JOIN albums a ON r.id_album = a.id_album
+            WHERE r.id_rola = @id";
+            
+	    comando.Parameters.AddWithValue("@id", id);
+	    
+	    using (var reader = comando.ExecuteReader()){
+            if(reader.Read()){
+                var album = new Album
+		    {
+		        nombre = reader.IsDBNull(0) ? "" : reader.GetString(0),
+			year = reader.IsDBNull(1) ? 0 : reader.GetInt32(1)
+		    };
+                return album;
+            }
+        }
+    }
+    return null;
+    }
 }

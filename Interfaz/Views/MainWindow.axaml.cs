@@ -5,6 +5,7 @@ using Interfaz.ViewModels;
 using Interfaz.Models;
 using Interfaz.Views.BotonesArriba;
 using Interfaz.Views.BarraCancionActual.Title;
+using Interfaz.Views.BarraCancionActual.Albums;
 using Interfaz.Views.BarraCancionActual.Artista;
 
 namespace Interfaz.Views;
@@ -74,7 +75,18 @@ public partial class MainWindow : Window
 	
     }
     
-    private void AlbumClick(object? sender, RoutedEventArgs e) { }
+    private void AlbumClick(object? sender, RoutedEventArgs e) {
+	var vm = DataContext as MainWindowViewModel;
+	// Obtenemos la cancion seleccionada que vive en MainWindowViewModel
+	var cancion = vm?.CancionSeleccionada;
+	if (cancion == null || vm == null) return;
+	
+	Album? album = vm.datosAlbum(cancion);
+	if(album == null) return;
+	
+	new AlbumWindow(album).ShowDialog(this); 
+    
+    }
     
     private void RegistrarArtistaClick(object? sender, RoutedEventArgs e){
 	var vm = DataContext as MainWindowViewModel;

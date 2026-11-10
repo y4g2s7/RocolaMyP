@@ -63,4 +63,9 @@ public partial class MainWindowViewModel : ViewModelBase
 	BaseDatos.eliminarPersona(artistaActual);
 	BaseDatos.registrarArtista(artistaModificado);
     }
+
+    public Album? datosAlbum(CancionFila cf){
+	int id = cf.id;
+	return BaseDatos.getDatosAlbum(id);
+    }
 }
