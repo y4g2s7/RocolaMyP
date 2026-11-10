@@ -196,7 +196,7 @@ public class BaseDatos{
 		cmdInsert.Parameters.AddWithValue("@death", artista.muerteA);
 		cmdInsert.ExecuteNonQuery();
 	    }
-	} if(artista.tipo==1){
+	} else if(artista.tipo==1){
 	    
 	    using(var comandoVerifica = conexion.CreateCommand()){
 		// Le ponemos el texto
@@ -218,6 +218,37 @@ public class BaseDatos{
 		cmdInsert.Parameters.AddWithValue("@end", artista.finB);
 		cmdInsert.ExecuteNonQuery();
 	    }
-	} 
+	}
+    }
+
+    
+    public static void eliminarPersona(Artista artista){
+	// Validación de seguridad: si no hay nombre, no podemos buscar a quién borrar
+	if (string.IsNullOrWhiteSpace(artista.seudonimo)) return;
+	
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+	
+        comando.CommandText = @"
+        DELETE FROM persons 
+        WHERE stage_name = @nombre";
+        
+	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
+        comando.ExecuteNonQuery();
+    }
+
+    public static void eliminarBanda(Artista artista){
+	// Validación de seguridad: si no hay nombre, no podemos buscar a quién borrar
+	if (string.IsNullOrWhiteSpace(artista.seudonimo)) return;
+	
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+	
+        comando.CommandText = @"
+        DELETE FROM groups 
+        WHERE name = @nombre";
+        
+	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
+        comando.ExecuteNonQuery();
     }
 }

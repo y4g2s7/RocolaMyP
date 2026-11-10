@@ -28,6 +28,7 @@ public partial class RegistrarArtistaWindow : Window
 
 	// Si es distinto de null, algo cambio
 	if (artistaModificado != null){
+	   BaseDatos.eliminarBanda(artistaActual);
 	   BaseDatos.registrarArtista(artistaModificado);
            Close(); 
 	}
@@ -46,13 +47,33 @@ public partial class RegistrarArtistaWindow : Window
 
 	// Si es distinto de null, algo cambio
 	if (artistaModificado != null){
-	   BaseDatos.registrarArtista(artistaModificado);
+	    BaseDatos.eliminarPersona(artistaActual);
+	    BaseDatos.registrarArtista(artistaModificado);
            Close(); 
 	}
 	
     }
     
-    private void ConvertirADesconocidoClick(object? sender, RoutedEventArgs e) { }
+    private async void ConvertirADesconocidoClick(object? sender, RoutedEventArgs e) {
+	var artistaActual = DataContext as Artista;
+	if (artistaActual == null) return;
+
+	var ventanaD = new RegistrarDesconocidoWindow();
+	ventanaD.DataContext = artistaActual; 
+
+	// Esperamos a que el usuario guarde (true) o cancele (false)
+	// Si guarda, nos devuelve el artista modificado
+	var artistaModificado = await ventanaD.ShowDialog<Artista>(this);
+
+	// Si es distinto de null, algo cambio
+	if (artistaModificado != null){
+	    BaseDatos.eliminarBanda(artistaActual);
+	    BaseDatos.eliminarPersona(artistaActual);
+	    BaseDatos.registrarArtista(artistaModificado);
+           Close(); 
+	}
+    }
+    
     private void CerrarVentana(object? sender, Avalonia.Interactivity.RoutedEventArgs e){
         Close(); 
     }

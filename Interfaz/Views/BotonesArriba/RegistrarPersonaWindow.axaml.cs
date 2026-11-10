@@ -12,7 +12,7 @@ public partial class RegistrarPersonaWindow : Window
     {
         InitializeComponent();
     }
-
+    
     private void GuardarClick(object? sender, RoutedEventArgs e){
 	//Obtenemos el Artista que nos pasaron
 	var artista = DataContext as Artista;
