@@ -17,4 +17,9 @@ public class Artista{
         }
     }
     public int id{ get; set;}
+
+    public bool PuedeSerPersona => tipo != 0;
+    public bool PuedeSerBanda => tipo != 1;
+    public bool PuedeSerDesconocido => tipo != 2;
+
 }

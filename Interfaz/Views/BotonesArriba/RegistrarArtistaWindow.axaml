@@ -18,14 +18,17 @@
       <TextBlock Text="¿Qué deseas hacer?"/>
 
     <Button Content="Convertir en Persona" 
-            Click="ConvertirAPersonaClick"
+	    IsEnabled="{Binding PuedeSerPersona}"
+	    Click="ConvertirAPersonaClick"
             Background="#4E342E" Foreground="#F5F5DC" Padding="10"/>
 
-    <Button Content="Convertir en Banda" 
+    <Button Content="Convertir en Banda"
+	    IsEnabled="{Binding PuedeSerBanda}"
             Click="ConvertirABandaClick"
             Background="#4E342E" Foreground="#F5F5DC" Padding="10"/>
 
-    <Button Content="Marcar como Desconocido" 
+    <Button Content="Convertir en Desconocido"
+	    IsEnabled="{Binding PuedeSerDesconocido}"
             Click="ConvertirADesconocidoClick"
             Background="#4E342E" Foreground="#F5F5DC" Padding="10"/>
 
