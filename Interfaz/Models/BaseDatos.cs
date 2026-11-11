@@ -342,4 +342,19 @@ public class BaseDatos{
 
 	comando.ExecuteNonQuery();
     }
+
+    public static void EliminarPersonaDeGrupo(int idPersona, string nombreBanda){
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+	
+	comando.CommandText = @"
+        DELETE FROM in_group 
+        WHERE id_person = @id_persona 
+          AND id_group = (SELECT id_group FROM groups WHERE name = @nombreBanda)";
+	
+	comando.Parameters.AddWithValue("@id_persona", idPersona);
+	comando.Parameters.AddWithValue("@nombreBanda", nombreBanda);
+
+	comando.ExecuteNonQuery();
+    }
 }

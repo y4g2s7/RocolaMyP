@@ -17,9 +17,10 @@
 	  
           <Button Content="Eliminar Integrante"
 		  Background="#4E342E"
+		  Click = "eliminarClick"
 		  Foreground="#F5F5DC"
 		  Padding="15,10"/>
-
+	  
 	  <Button Content="SALIR" 
 		  Click="CerrarVentana"
 		  HorizontalAlignment="Right" 
@@ -31,7 +32,8 @@
         </StackPanel>
 
         <!-- Tabla de Integrantes -->
-        <DataGrid ItemsSource="{Binding Integrantes}"
+        <DataGrid x:Name="ListaIntegrantes"
+		  ItemsSource="{Binding Integrantes}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   Background="#2B1D14"

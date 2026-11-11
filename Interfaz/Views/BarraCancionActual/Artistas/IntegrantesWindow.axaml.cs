@@ -40,7 +40,17 @@ public partial class IntegrantesWindow : Window
     }
 
     private void eliminarClick(object? sender, RoutedEventArgs e){
+	//Obtenemos el ViewModel y el integrante seleccionado en la tabla
+	var vm = DataContext as IntegrantesWindowViewModel;
+	var seleccionado = ListaIntegrantes.SelectedItem as Integrante;
 	
+	// Si no hay nadie seleccionado, no hacemos nada
+	if (seleccionado == null || vm == null) return;
+
+	// Borramos de la base de datos
+        MainWindowViewModel.eliminarPersonaGrupo(seleccionado.id_persona, vm.NombreBanda);
+	// Lo quitamos de la lista visual. 
+	vm.Integrantes.Remove(seleccionado);
     }
 
     private void CerrarVentana(object? sender, Avalonia.Interactivity.RoutedEventArgs e){

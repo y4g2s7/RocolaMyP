@@ -75,4 +75,8 @@ public partial class MainWindowViewModel : ViewModelBase
     public static void agregarPersonaGrupo(int id, string nombre){
 	BaseDatos.AgregarPersonaAGrupo(id, nombre);
     }
+
+    public static void eliminarPersonaGrupo(int id, string nombre){
+	BaseDatos.EliminarPersonaDeGrupo(id, nombre);
+    }
 }
