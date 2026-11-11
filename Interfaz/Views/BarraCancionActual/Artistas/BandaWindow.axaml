@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Interfaz.Views.BarraCancionActual.Artista.BandaWindow"
+        x:Class="Interfaz.Views.BarraCancionActual.Artistas.BandaWindow"
         Title="Banda"
 	xmlns:models="using:Interfaz.Models"
 	x:DataType="models:Artista"
@@ -21,16 +21,28 @@
     </StackPanel>
 
 
-    <StackPanel DockPanel.Dock="Bottom" Margin="20, 0, 20, 20">
-        <Button Content="SALIR" 
-		Click = "CerrarVentana"
-		HorizontalAlignment="Right" 
-                HorizontalContentAlignment="Center"
-                Background="#8A3220" 
-                Foreground="#F5F5DC" 
-                Padding="10"/>
-    </StackPanel>
+   <Grid DockPanel.Dock="Bottom" Margin="20, 0, 20, 20" ColumnDefinitions="Auto, *">
+
+      <Button Grid.Column="0" 
+              Content="Integrantes" 
+	      Click = "verIntegrantesClick"
+	      HorizontalAlignment="Left" 
+              HorizontalContentAlignment="Center"
+              Background="#4E342E"
+              Foreground="#F5F5DC" 
+              Padding="10"/>
     
+      <Button Grid.Column="1" 
+              Content="SALIR" 
+              Click="CerrarVentana"
+              HorizontalAlignment="Right" 
+              HorizontalContentAlignment="Center"
+              Background="#8A3220" 
+              Foreground="#F5F5DC" 
+              Padding="10"/>
+
+   </Grid>
+   
     <Grid ColumnDefinitions="Auto, *" Margin="20">
 
       <StackPanel Grid.Column="0" 
@@ -69,6 +81,8 @@
                     Background="#4E342E"
 		    Foreground="#F5F5DC" 
                     Padding="10"/>
+
+	    
             
 	</StackPanel>
     </Grid>

@@ -1,0 +1,49 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Interfaz.ViewModels"
+        x:Class="Interfaz.Views.BarraCancionActual.Artistas.IntegrantesWindow"
+        x:DataType="vm:IntegrantesWindowViewModel"
+        Title="Integrantes de la Banda" Width="600" Height="450"
+        Background="#2B1D14">
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Spacing="20" Margin="20">
+          <Button Content="Agregar Integrante"
+		  Background="#4E342E"
+		  Foreground="#F5F5DC"
+		  Click="agregarClick"
+		  Padding="15,10"/>
+	  
+          <Button Content="Eliminar Integrante"
+		  Background="#4E342E"
+		  Foreground="#F5F5DC"
+		  Padding="15,10"/>
+
+	  <Button Content="SALIR" 
+		  Click="CerrarVentana"
+		  HorizontalAlignment="Right" 
+		  HorizontalContentAlignment="Center"
+		  Background="#8A3220" 
+		  Foreground="#F5F5DC" 
+		  Padding="10"/>
+
+        </StackPanel>
+
+        <!-- Tabla de Integrantes -->
+        <DataGrid ItemsSource="{Binding Integrantes}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Background="#2B1D14"
+                  RowBackground="#3E2723"
+                  Foreground="#F5F5DC"
+                  GridLinesVisibility="Horizontal"
+                  HorizontalGridLinesBrush="#6D4C41">
+                  
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nombre Artístico" Width="*" Binding="{Binding nombreArtistico}"/>
+                <DataGridTextColumn Header="Nombre Real" Width="*" Binding="{Binding nombreReal}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

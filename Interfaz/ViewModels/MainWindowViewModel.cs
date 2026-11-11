@@ -72,4 +72,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public static void agregarNuevaPersona(Artista artista){
         BaseDatos.registrarArtista(artista);   
     }
+    public static void agregarPersonaGrupo(int id, string nombre){
+	BaseDatos.AgregarPersonaAGrupo(id, nombre);
+    }
 }

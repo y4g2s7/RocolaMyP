@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Interfaz.ViewModels"
+        x:Class="Interfaz.Views.BarraCancionActual.Artistas.AgregarIntegranteWindow"
+        x:DataType="vm:AgregarIntegrantesWindowViewModel"
+        Title="Seleccionar Persona" Width="500" Height="400"
+        Background="#2B1D14">
+
+    <DockPanel>
+        <!-- Botones Abajo -->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Spacing="20" Margin="20">
+          <Button Content="Cancelar"
+		  Click="CancelarClick"
+		  Background="Gray"
+		  Foreground="White"
+		  Padding="15,10"/>
+          <Button Content="Agregar a la banda"
+		  Click="AgregarClick"
+		  Background="#4E342E"
+		  Foreground="#F5F5DC"
+		  Padding="15,10"/>
+        </StackPanel>
+
+        <!-- Tabla de Personas -->
+        <DataGrid x:Name="ListaPersonas"
+                  ItemsSource="{Binding Personas}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  Background="#2B1D14"
+                  RowBackground="#3E2723"
+                  Foreground="#F5F5DC">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nombre Artístico" Width="*" Binding="{Binding nombreArtistico}"/>
+                <DataGridTextColumn Header="Nombre Real" Width="*" Binding="{Binding nombreReal}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

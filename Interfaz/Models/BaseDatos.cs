@@ -276,5 +276,70 @@ public class BaseDatos{
         }
     }
     return null;
+  }
+
+    public static List<Integrante> ObtenerIntegrantes(string nombreBanda){
+	var lista= new List<Integrante>();
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+
+        comando.CommandText = @"
+        SELECT p.id_person, p.stage_name, p.real_name
+        FROM persons p
+        JOIN in_group ig ON p.id_person = ig.id_person
+        JOIN groups g ON ig.id_group = g.id_group
+        WHERE g.name = @nombreBanda";
+
+	comando.Parameters.AddWithValue("@nombreBanda", nombreBanda);
+
+	using var reader= comando.ExecuteReader();
+	while(reader.Read()){
+	    lista.Add(new Integrante
+	    {
+		id_persona = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+		nombreArtistico = reader.IsDBNull(1) ? "" : reader.GetString(1),
+		nombreReal = reader.IsDBNull(2) ? "" : reader.GetString(2)
+	    });
+	}
+	return lista;
+    }
+
+    // 1. Obtener TODAS las personas
+    public static List<Integrante> ObtenerPersonas(){
+	var lista = new List<Integrante>();
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+
+	comando.CommandText = "SELECT id_person, stage_name, real_name FROM persons";
+    
+	using var reader = comando.ExecuteReader();
+	while(reader.Read()){
+	    lista.Add(new Integrante
+	    {
+		id_persona = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+		nombreArtistico = reader.IsDBNull(1) ? "" : reader.GetString(1),
+		nombreReal = reader.IsDBNull(2) ? "" : reader.GetString(2)
+	    });
+	}
+	return lista;
+    }
+
+    // 2. Insertar la relación en la tabla in_group
+    public static void AgregarPersonaAGrupo(int idPersona, string nombreBanda){
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+
+	// Buscamos el id_group usando el nombre de la banda, y luego insertamos.
+	// Usamos 'INSERT OR IGNORE' para que no truene si la persona ya está en el grupo.
+	comando.CommandText = @"
+        INSERT OR IGNORE INTO in_group (id_person, id_group)
+        SELECT @id_persona, id_group 
+        FROM groups 
+        WHERE name = @nombreBanda";
+
+	comando.Parameters.AddWithValue("@id_persona", idPersona);
+	comando.Parameters.AddWithValue("@nombreBanda", nombreBanda);
+
+	comando.ExecuteNonQuery();
     }
 }

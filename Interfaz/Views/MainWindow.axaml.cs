@@ -6,7 +6,7 @@ using Interfaz.Models;
 using Interfaz.Views.BotonesArriba;
 using Interfaz.Views.BarraCancionActual.Title;
 using Interfaz.Views.BarraCancionActual.Albums;
-using Interfaz.Views.BarraCancionActual.Artista;
+using Interfaz.Views.BarraCancionActual.Artistas;
 
 namespace Interfaz.Views;
 
