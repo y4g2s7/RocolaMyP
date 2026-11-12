@@ -50,19 +50,19 @@ public partial class MainWindowViewModel : ViewModelBase
 	return BaseDatos.getDatosArtista(id);
     }
 
-    public static void agregarPersona(Artista artistaActual, Artista artistaModificado){
-	BaseDatos.eliminarBanda(artistaActual);
+    public static void agregarPersona(string nombreViejo, Artista artistaModificado){
+	BaseDatos.eliminarBanda(nombreViejo);
 	BaseDatos.registrarArtista(artistaModificado);   
     }
     
-    public static void agregarBanda(Artista artistaActual, Artista artistaModificado){
-	BaseDatos.eliminarPersona(artistaActual);
+    public static void agregarBanda(string nombreViejo, Artista artistaModificado){
+	BaseDatos.eliminarPersona(nombreViejo);
 	BaseDatos.registrarArtista(artistaModificado);
     }
 
-    public static void agregarDesconocido(Artista artistaActual, Artista artistaModificado){
-	BaseDatos.eliminarBanda(artistaActual);
-	BaseDatos.eliminarPersona(artistaActual);
+    public static void agregarDesconocido(string artista, Artista artistaModificado){
+	BaseDatos.eliminarBanda(artista);
+	BaseDatos.eliminarPersona(artista);
 	BaseDatos.registrarArtista(artistaModificado);
     }
 

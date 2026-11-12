@@ -224,9 +224,9 @@ public class BaseDatos{
     }
 
     
-    public static void eliminarPersona(Artista artista){
+    public static void eliminarPersona(string artista){
 	// Validación de seguridad: si no hay nombre, no podemos buscar a quién borrar
-	if (string.IsNullOrWhiteSpace(artista.seudonimo)) return;
+	if (string.IsNullOrWhiteSpace(artista)) return;
 	
 	using var conexion = conectar();
 	using var comando = conexion.CreateCommand();
@@ -235,13 +235,13 @@ public class BaseDatos{
         DELETE FROM persons 
         WHERE stage_name = @nombre";
         
-	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
+	comando.Parameters.AddWithValue("@nombre", artista);
         comando.ExecuteNonQuery();
     }
 
-    public static void eliminarBanda(Artista artista){
+    public static void eliminarBanda(string artista){
 	// Validación de seguridad: si no hay nombre, no podemos buscar a quién borrar
-	if (string.IsNullOrWhiteSpace(artista.seudonimo)) return;
+	if (string.IsNullOrWhiteSpace(artista)) return;
 	
 	using var conexion = conectar();
 	using var comando = conexion.CreateCommand();
@@ -250,7 +250,7 @@ public class BaseDatos{
         DELETE FROM groups 
         WHERE name = @nombre";
         
-	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
+	comando.Parameters.AddWithValue("@nombre", artista);
         comando.ExecuteNonQuery();
     }
 

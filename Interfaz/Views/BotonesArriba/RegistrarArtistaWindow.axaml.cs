@@ -16,7 +16,7 @@ public partial class RegistrarArtistaWindow : Window
     private async void ConvertirAPersonaClick(object? sender, RoutedEventArgs e){
 	var artistaActual = DataContext as Artista;
 	if (artistaActual == null) return;
-	
+	string nombreViejo = artistaActual.seudonimo;
 	// Abrimos la ventana de persona
 	var ventanaPersona = new RegistrarPersonaWindow();
 	// Le pasamos los datos actuales
@@ -28,7 +28,7 @@ public partial class RegistrarArtistaWindow : Window
 
 	// Si es distinto de null, algo cambio
 	if(artistaModificado != null){
-	    MainWindowViewModel.agregarPersona(artistaActual, artistaModificado);
+	    MainWindowViewModel.agregarPersona(nombreViejo, artistaModificado);
 	    Close(); 
 	}
     }
@@ -36,7 +36,7 @@ public partial class RegistrarArtistaWindow : Window
     private async void ConvertirABandaClick(object? sender, RoutedEventArgs e) {
 	var artistaActual = DataContext as Artista;
 	if (artistaActual == null) return;
-
+	string nombreViejo = artistaActual.seudonimo;
 	var ventanaBanda = new RegistrarBandaWindow();
 	ventanaBanda.DataContext = artistaActual; 
 
@@ -46,7 +46,7 @@ public partial class RegistrarArtistaWindow : Window
 
 	// Si es distinto de null, algo cambio
 	if(artistaModificado != null){
-	    MainWindowViewModel.agregarBanda(artistaActual, artistaModificado);
+	    MainWindowViewModel.agregarBanda(nombreViejo, artistaModificado);
 	    // BaseDatos.eliminarPersona(artistaActual);
 	    // BaseDatos.registrarArtista(artistaModificado);
            Close(); 
@@ -57,7 +57,8 @@ public partial class RegistrarArtistaWindow : Window
     private async void ConvertirADesconocidoClick(object? sender, RoutedEventArgs e) {
 	var artistaActual = DataContext as Artista;
 	if (artistaActual == null) return;
-
+	string nombreViejo = artistaActual.seudonimo;
+	
 	var ventanaD = new RegistrarDesconocidoWindow();
 	ventanaD.DataContext = artistaActual; 
 
@@ -67,7 +68,7 @@ public partial class RegistrarArtistaWindow : Window
 
 	// Si es distinto de null, algo cambio
 	if (artistaModificado != null){
-	    MainWindowViewModel.agregarDesconocido(artistaActual, artistaModificado);
+	    MainWindowViewModel.agregarDesconocido(nombreViejo,artistaModificado);
 	    // BaseDatos.eliminarBanda(artistaActual);
 	    // BaseDatos.eliminarPersona(artistaActual);
 	    // BaseDatos.registrarArtista(artistaModificado);
