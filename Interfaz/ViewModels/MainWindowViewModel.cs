@@ -103,4 +103,29 @@ public partial class MainWindowViewModel : ViewModelBase
 	}
         BaseDatos.ActualizarCancion(tituloEditado);
     }
+
+    public void ActualizarArtista(Artista artistaEditado){
+	BaseDatos.ActualizarPerformer(artistaEditado);
+	// Obtenemos una lista de las canciones con ese artista
+	var cancionesAfectadas = canciones.Where(c => c.id_performer == artistaEditado.id).ToList();
+
+	// Las actualizamos una por una
+	foreach(var cancionVieja in cancionesAfectadas){
+	    int index = canciones.IndexOf(cancionVieja);
+
+	    // Creamos una nueva instancia para forzar al DataGrid a redibujar
+	    var cancionNueva = new CancionFila
+		{
+		    id = cancionVieja.id,
+		    id_performer = cancionVieja.id_performer,
+		    titulo = cancionVieja.titulo,
+		    genero = cancionVieja.genero,
+		    album = cancionVieja.album,
+		    performer = artistaEditado.seudonimo 
+		};
+
+	    // Reemplazamos en la colección
+	    canciones[index] = cancionNueva;
+	}
+    }
 }

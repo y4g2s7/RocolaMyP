@@ -59,7 +59,7 @@ public partial class MainWindow : Window
     
     }
     
-    private void PerformerClick(object? sender, RoutedEventArgs e) {
+    private async void PerformerClick(object? sender, RoutedEventArgs e) {
 	var vm = DataContext as MainWindowViewModel;
 	// Obtenemos la cancion seleccionada que vive en MainWindowViewModel
 	var cancion = vm?.CancionSeleccionada;
@@ -82,7 +82,12 @@ public partial class MainWindow : Window
 	} else if(artista.tipo==2){
 	    var ventana = new DesconocidoWindow();
             ventana.DataContext = artista;
-            ventana.ShowDialog(this);
+            var artistaModificado = await ventana.ShowDialog<Artista>(this);
+	    // Si el usuario guardo actualizamos
+	    if (artistaModificado != null){
+		// Le mandamos al modelo para modificar
+		vm.ActualizarArtista(artistaModificado);
+	    }
 	}
 	
     }

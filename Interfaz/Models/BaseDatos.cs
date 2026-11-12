@@ -14,7 +14,7 @@ public class BaseDatos{
 	using (var comando = conexion.CreateCommand())
 	{
 	    comando.CommandText = @"
-    SELECT r.id_rola, r.title, r.genre, p.name, a.name
+    SELECT r.id_rola, r.title, r.genre, p.name, a.name, r.id_performer
     FROM rolas r
     LEFT JOIN performers p ON r.id_performer = p.id_performer
     LEFT JOIN albums a     ON r.id_album = a.id_album";
@@ -27,7 +27,8 @@ public class BaseDatos{
 			    titulo = reader.IsDBNull(1) ? "" : reader.GetString(1),
 			    genero = reader.IsDBNull(2) ? "" : reader.GetString(2),
 			    performer = reader.IsDBNull(3) ? "" : reader.GetString(3),
-			    album = reader.IsDBNull(4) ? "" : reader.GetString(4)
+			    album = reader.IsDBNull(4) ? "" : reader.GetString(4),
+			    id_performer = reader.IsDBNull(5) ? 0 : reader.GetInt32(5) 
 			};
 
 		    lista.Add(cancion);
@@ -376,6 +377,19 @@ public class BaseDatos{
 
 	comando.ExecuteNonQuery();
     }
-
     
+    public static void ActualizarPerformer(Artista artista){
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+
+	comando.CommandText = @"
+        UPDATE performers 
+        SET name = @nombre 
+        WHERE id_performer = @id";
+
+	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
+	comando.Parameters.AddWithValue("@id", artista.id);
+
+	comando.ExecuteNonQuery();
+    }
 }
