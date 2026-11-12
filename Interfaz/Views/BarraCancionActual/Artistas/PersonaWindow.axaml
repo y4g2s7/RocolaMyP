@@ -7,11 +7,11 @@
         Title="Persona"
 	xmlns:models="using:Interfaz.Models"
 	x:DataType="models:Artista"
-	Width="600" Height="400"
+	Width="600" Height="500"
 	Background="#2B1D14">
   <DockPanel>
     
-    <StackPanel DockPanel.Dock="Top" Margin="20">
+    <StackPanel DockPanel.Dock="Top" Margin="10">
       
       <TextBlock Text="Presiona para editar"
 		 Foreground="#FFFFFF" 
@@ -21,14 +21,21 @@
     </StackPanel>
 
 
-    <StackPanel DockPanel.Dock="Bottom" Margin="20, 0, 20, 20">
-      <Button Content="SALIR" 
-	      Click = "CerrarVentana"
-	      HorizontalAlignment="Right" 
-              HorizontalContentAlignment="Center"
-              Background="#8A3220" 
-              Foreground="#F5F5DC" 
-              Padding="10"/>
+    
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" 
+                HorizontalAlignment="Right" Spacing="10" Margin="20, 0, 20, 20">
+        <Button Content="GUARDAR" 
+                Click="GuardarClick"
+                HorizontalContentAlignment="Center"
+                Background="#4E342E" 
+                Foreground="#F5F5DC" 
+                Padding="10,10"/>
+        <Button Content="SALIR" 
+                Click="CerrarVentana"
+                HorizontalContentAlignment="Center"
+                Background="#8A3220" 
+                Foreground="#F5F5DC" 
+                Padding="10,10"/>
     </StackPanel>
     
     <Grid ColumnDefinitions="Auto, *" Margin="20">
@@ -46,36 +53,36 @@
       <!-- Botones en la segunda columna -->
       <StackPanel Grid.Column="1" 
                   Orientation="Vertical" 
-                  Spacing="18"
+                  Spacing="8"
                   VerticalAlignment="Center">
 	
-	<Button Content="{Binding seudonimo, StringFormat='Seudonimo: {0}'}" 
-                HorizontalAlignment="Stretch" 
-                HorizontalContentAlignment="Center"
-                Background="#4E342E" 
-                Foreground="#F5F5DC" 
-                Padding="10"/>
-	
-        <Button Content="{Binding nombreA, StringFormat='Nombre Real: {0}'}" 
-                HorizontalAlignment="Stretch" 
-                HorizontalContentAlignment="Center"
-                Background="#4E342E" 
-                Foreground="#F5F5DC" 
-                Padding="10"/>
-	
-        <Button Content="{Binding cumpleañosA, StringFormat='Nacimiento: {0}'}" 
-                HorizontalAlignment="Stretch" 
-                HorizontalContentAlignment="Center"
-                Background="#4E342E"
-		Foreground="#F5F5DC" 
-                Padding="10"/>
+	<TextBlock Text="Seudonimo:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding seudonimo, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
+	    
+	    <TextBlock Text="Nombre Real:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding nombreA, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
 
-	<Button Content="{Binding muerteA, StringFormat='Muerte: {0}'}" 
-                HorizontalAlignment="Stretch" 
-                HorizontalContentAlignment="Center"
-                Background="#4E342E"
-		Foreground="#F5F5DC" 
-                Padding="10"/>
+	    <TextBlock Text="Nacimiento:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding cumpleañosA, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
+
+	    <TextBlock Text="Muerte:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding muerteA, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
         
       </StackPanel>
     </Grid>

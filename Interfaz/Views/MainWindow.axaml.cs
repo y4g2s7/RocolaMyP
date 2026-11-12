@@ -69,11 +69,19 @@ public partial class MainWindow : Window
 	if(artista == null) return;
 	// Dependiendo del tipo abrimos que ventana
 	if(artista.tipo==0){
+	    string nombreViejo = artista.seudonimo;
+	    string realViejo = artista.nombreA;
+	    int idViejo = artista.id;
+	    
 	    var ventana = new PersonaWindow();
             // Le pasamos los datos del artista a la ventana
             ventana.DataContext = artista; 
-            ventana.ShowDialog(this);
-	    
+            var personaModificada = await ventana.ShowDialog<Artista>(this);
+	    // Si el usuario guardo actualizamos
+	    if (personaModificada != null){
+	        vm.ActualizarArtista(personaModificada,idViejo);
+		vm.ActualizarPersona(personaModificada, nombreViejo, realViejo);
+	    }
 	} else if(artista.tipo==1){
 	    var ventana = new BandaWindow();
             ventana.DataContext = artista;

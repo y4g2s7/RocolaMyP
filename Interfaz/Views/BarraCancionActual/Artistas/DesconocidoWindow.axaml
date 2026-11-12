@@ -47,7 +47,7 @@
       <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
 	<!-- Imagenes en la carpeta Assets -->
 	<Image Source="avares://Interfaz/Assets/desconocido.png" Width="150" Height="150" />
-
+	
 	   <TextBlock Text="Artista:" Foreground="#F5F5DC" FontWeight="Bold"/>
             <TextBox Text="{Binding seudonimo, Mode=TwoWay}" 
                      Background="#4E342E" 

@@ -441,4 +441,51 @@ public class BaseDatos{
 	    throw;
 	}
     }
+
+
+    public static void actualizarPersona(Artista artista, string nombreViejo, string realViejo){
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+
+	// Verificamos si ya existe OTRA persona con ese Stage Name Y Real Name
+	bool personaYaExiste = false;
+	using (var cmdCheck = conexion.CreateCommand()){
+	    cmdCheck.CommandText = @"
+            SELECT count(*) FROM persons 
+            WHERE stage_name = @nuevoStage 
+              AND real_name = @nuevoReal 
+              AND stage_name != @viejoStage"; // Evitamos que se compare consigo misma
+            
+	    cmdCheck.Parameters.AddWithValue("@nuevoStage", artista.seudonimo);
+	    cmdCheck.Parameters.AddWithValue("@nuevoReal", artista.nombreA);
+	    cmdCheck.Parameters.AddWithValue("@viejoStage", nombreViejo);
+        
+	    personaYaExiste = Convert.ToInt32(cmdCheck.ExecuteScalar()) > 0;
+	}
+
+	if(personaYaExiste){
+	    // MERGE: Si el nombre y el nombre real ya existen, borramos el registro viejo
+	    comando.CommandText = "DELETE FROM persons WHERE stage_name = @viejoNombre";
+	    comando.Parameters.AddWithValue("@viejoNombre", nombreViejo);
+	    comando.ExecuteNonQuery();
+	}else{
+	    // ACTUALIZACIÓN NORMAL
+	    comando.CommandText = @"
+            UPDATE persons 
+            SET stage_name = @nuevoNombre, 
+                real_name = @real, 
+                birth_date = @birth, 
+                death_date = @death
+            WHERE stage_name = @viejoNombre AND real_name = @viejoReal";
+            
+	    comando.Parameters.AddWithValue("@nuevoNombre", artista.seudonimo);
+	    comando.Parameters.AddWithValue("@real", artista.nombreA);
+	    comando.Parameters.AddWithValue("@birth", artista.cumpleañosA);
+	    comando.Parameters.AddWithValue("@death", artista.muerteA);
+	    comando.Parameters.AddWithValue("@viejoNombre", nombreViejo);
+	    comando.Parameters.AddWithValue("@viejoReal", realViejo);
+	    comando.ExecuteNonQuery();
+
+	}
+    }
 }
