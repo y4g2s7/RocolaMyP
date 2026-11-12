@@ -380,16 +380,65 @@ public class BaseDatos{
     
     public static void ActualizarPerformer(Artista artista){
 	using var conexion = conectar();
-	using var comando = conexion.CreateCommand();
+	// Iniciamos una transacción para asegurar que todo se guarde o nada se guarde
+	using var transaccion = conexion.BeginTransaction();
 
-	comando.CommandText = @"
-        UPDATE performers 
-        SET name = @nombre 
-        WHERE id_performer = @id";
+	try{
+	    int idExistente = 0;
+        
+	    // Verificamos si el nombre ya existe en OTRO artista
+	    using(var cmdCheck = conexion.CreateCommand()){
+		cmdCheck.Transaction = transaccion;
+		cmdCheck.CommandText = "SELECT id_performer FROM performers WHERE name = @nombre AND id_performer != @id";
+		cmdCheck.Parameters.AddWithValue("@nombre", artista.seudonimo);
+		cmdCheck.Parameters.AddWithValue("@id", artista.id);
+            
+		var result = cmdCheck.ExecuteScalar();
+		if(result != null){
+		    idExistente = Convert.ToInt32(result);
+		}
+	    }
 
-	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
-	comando.Parameters.AddWithValue("@id", artista.id);
+	    // Si el nombre ya existe, hacemos la FUSION
+	    if(idExistente>0){
+		// Movemos todas las canciones del artista viejo al artista existente
+		using(var cmdMover = conexion.CreateCommand()){
+		    cmdMover.Transaction = transaccion;
+		    cmdMover.CommandText = "UPDATE rolas SET id_performer = @idExistente WHERE id_performer = @idViejo";
+		    cmdMover.Parameters.AddWithValue("@idExistente", idExistente);
+		    cmdMover.Parameters.AddWithValue("@idViejo", artista.id);
+		    cmdMover.ExecuteNonQuery();
+		}
 
-	comando.ExecuteNonQuery();
+		// Borramos al artista viejo
+		using(var cmdBorrar = conexion.CreateCommand()){
+		    cmdBorrar.Transaction = transaccion;
+		    cmdBorrar.CommandText = "DELETE FROM performers WHERE id_performer = @idViejo";
+		    cmdBorrar.Parameters.AddWithValue("@idViejo", artista.id);
+		    cmdBorrar.ExecuteNonQuery();
+		}
+
+		// Actualizamos el ID en el objeto para avisarle al ViewModel que hubo fusion
+		artista.id = idExistente; 
+	    }
+	    // Si el nombre NO existe, simplemente actualizamos normal
+	    else{
+		using(var cmdUpdate = conexion.CreateCommand()){
+		    cmdUpdate.Transaction = transaccion;
+		    cmdUpdate.CommandText = "UPDATE performers SET name = @nombre WHERE id_performer = @id";
+		    cmdUpdate.Parameters.AddWithValue("@nombre", artista.seudonimo);
+		    cmdUpdate.Parameters.AddWithValue("@id", artista.id);
+		    cmdUpdate.ExecuteNonQuery();
+		}
+	    }
+
+	    // Guardamos los cambios
+	    transaccion.Commit();
+	}
+	catch(Exception){
+	    // Si algo falla, deshacemos todo
+	    transaccion.Rollback();
+	    throw;
+	}
     }
 }

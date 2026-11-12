@@ -85,8 +85,9 @@ public partial class MainWindow : Window
             var artistaModificado = await ventana.ShowDialog<Artista>(this);
 	    // Si el usuario guardo actualizamos
 	    if (artistaModificado != null){
+		int idViejo = artistaModificado.id;
 		// Le mandamos al modelo para modificar
-		vm.ActualizarArtista(artistaModificado);
+		vm.ActualizarArtista(artistaModificado,idViejo);
 	    }
 	}
 	

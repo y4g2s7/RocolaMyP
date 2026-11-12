@@ -76,7 +76,7 @@
 
 	<!-- Para el Año -->
 	<TextBlock Text="Año:" Foreground="#F5F5DC" FontWeight="Bold"/>
-	<NumericUpDown Value="{Binding track, Mode=TwoWay}"
+	<NumericUpDown Value="{Binding year, Mode=TwoWay}"
 		       ShowButtonSpinner="False"
 		       AllowSpin="False"
 		       Background="#4E342E" 
