@@ -7,7 +7,7 @@
         Title="Banda"
 	xmlns:models="using:Interfaz.Models"
 	x:DataType="models:Artista"
-	Width="530" Height="320"
+	Width="530" Height="430"
         Background="#2B1D14">
   <DockPanel>
   
@@ -21,7 +21,7 @@
     </StackPanel>
 
 
-   <Grid DockPanel.Dock="Bottom" Margin="20, 0, 20, 20" ColumnDefinitions="Auto, *">
+   <Grid DockPanel.Dock="Bottom" Margin="20, 0, 20, 20" ColumnDefinitions="Auto, *, *">
 
       <Button Grid.Column="0" 
               Content="Integrantes" 
@@ -31,8 +31,17 @@
               Background="#4E342E"
               Foreground="#F5F5DC" 
               Padding="10"/>
-    
+
       <Button Grid.Column="1" 
+	      Content="GUARDAR" 
+              Click="GuardarClick"
+	      HorizontalAlignment="Right"
+                HorizontalContentAlignment="Center"
+                Background="#4E342E" 
+                Foreground="#F5F5DC" 
+                Padding="10,10"/>
+    
+      <Button Grid.Column="2" 
               Content="SALIR" 
               Click="CerrarVentana"
               HorizontalAlignment="Right" 
@@ -58,32 +67,30 @@
         <!-- Botones en la segunda columna -->
         <StackPanel Grid.Column="1" 
                     Orientation="Vertical" 
-                    Spacing="18"
+                    Spacing="10"
                     VerticalAlignment="Center">
-	  
-	    <Button Content="{Binding seudonimo, StringFormat='Nombre: {0}'}" 
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E" 
-                    Foreground="#F5F5DC" 
-                    Padding="10"/>
-	    
-            <Button Content="{Binding inicioB, StringFormat='Creación: {0}'}" 
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E" 
-                    Foreground="#F5F5DC" 
-                    Padding="10"/>
-	    
-            <Button Content="{Binding finB, StringFormat='Separación: {0}'}" 
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E"
-		    Foreground="#F5F5DC" 
-                    Padding="10"/>
 
+	  <TextBlock Text="Nombre:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding seudonimo, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
 	    
-            
+	    <TextBlock Text="Creación:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding inicioB, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
+	   
+	    <TextBlock Text="Separacion:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding finB, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
+	    
 	</StackPanel>
     </Grid>
   </DockPanel>

@@ -442,7 +442,7 @@ public class BaseDatos{
 	}
     }
 
-
+    
     public static void actualizarPersona(Artista artista, string nombreViejo, string realViejo){
 	using var conexion = conectar();
 	using var comando = conexion.CreateCommand();
@@ -486,6 +486,67 @@ public class BaseDatos{
 	    comando.Parameters.AddWithValue("@viejoReal", realViejo);
 	    comando.ExecuteNonQuery();
 
+	}
+    }
+
+    public static void actualizarBanda(Artista artista, string nombreViejo, string inicioViejo){
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+
+	// 1. Verificamos si ya existe OTRA banda con ese Nombre Y Fecha de Inicio
+	bool bandaYaExiste = false;
+	using (var cmdCheck = conexion.CreateCommand())
+	{
+	    cmdCheck.CommandText = @"
+            SELECT count(*) FROM groups 
+            WHERE name = @nuevoNombre 
+              AND start_date = @nuevoInicio 
+              AND name != @viejoNombre"; // Evitamos comparar consigo misma
+            
+	    cmdCheck.Parameters.AddWithValue("@nuevoNombre", artista.seudonimo);
+	    cmdCheck.Parameters.AddWithValue("@nuevoInicio", artista.inicioB);
+	    cmdCheck.Parameters.AddWithValue("@viejoNombre", nombreViejo);
+        
+	    bandaYaExiste = Convert.ToInt32(cmdCheck.ExecuteScalar()) > 0;
+	}
+
+	if (bandaYaExiste)
+	{
+	    // MERGE: Si la banda ya existe, borramos el registro viejo.
+        
+	    // PASO A: Borramos las relaciones de los integrantes de la banda vieja
+	    // para evitar errores de Foreign Key (Llave foránea).
+	    using (var cmdLimpiarIntegrantes = conexion.CreateCommand())
+	    {
+		cmdLimpiarIntegrantes.CommandText = @"
+                DELETE FROM in_group 
+                WHERE id_group = (SELECT id_group FROM groups WHERE name = @viejoNombre)";
+		cmdLimpiarIntegrantes.Parameters.AddWithValue("@viejoNombre", nombreViejo);
+		cmdLimpiarIntegrantes.ExecuteNonQuery();
+	    }
+
+	    // PASO B: Borramos la banda vieja
+	    comando.CommandText = "DELETE FROM groups WHERE name = @viejoNombre";
+	    comando.Parameters.AddWithValue("@viejoNombre", nombreViejo);
+	    comando.ExecuteNonQuery();
+	}
+	else
+	{
+	    // ACTUALIZACIÓN NORMAL
+	    comando.CommandText = @"
+            UPDATE groups 
+            SET name = @nuevoNombre, 
+                start_date = @inicio, 
+                end_date = @fin
+            WHERE name = @viejoNombre AND start_date = @viejoInicio";
+            
+	    comando.Parameters.AddWithValue("@nuevoNombre", artista.seudonimo);
+	    comando.Parameters.AddWithValue("@inicio", artista.inicioB);
+	    comando.Parameters.AddWithValue("@fin", artista.finB);
+	    comando.Parameters.AddWithValue("@viejoNombre", nombreViejo);
+	    comando.Parameters.AddWithValue("@viejoInicio", inicioViejo);
+        
+	    comando.ExecuteNonQuery();
 	}
     }
 }

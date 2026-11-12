@@ -178,21 +178,13 @@ public partial class MainWindowViewModel : ViewModelBase
     public void ActualizarPersona(Artista artistaEditado, string nombreViejo, string realViejo){
 	// Actualizamos en la base de datos
 	BaseDatos.actualizarPersona(artistaEditado, nombreViejo, realViejo);
-	// Actualizamos la lista de canciones
-	var cancionesAfectadas = canciones.Where(c => c.id_performer == artistaEditado.id).ToList();
-    
-	foreach(var cancionVieja in cancionesAfectadas){
-	    int index = canciones.IndexOf(cancionVieja);
-	    var cancionNueva = new CancionFila
-		{
-		    id = cancionVieja.id,
-		    id_performer = artistaEditado.id,
-		    titulo = cancionVieja.titulo,
-		    genero = cancionVieja.genero,
-		    album = cancionVieja.album,
-		    performer = artistaEditado.seudonimo 
-		};
-	    canciones[index] = cancionNueva;
-	}
+	
     }
+
+    public void ActualizarBanda(Artista artistaEditado, string nombreViejo, string inicioViejo){
+	// Actualizamos en la base de datos
+	BaseDatos.actualizarBanda(artistaEditado, nombreViejo, inicioViejo);
+	
+    }
+
 }

@@ -34,4 +34,11 @@ public partial class BandaWindow : Window
     
 	ventana.ShowDialog(this);
     }
+
+    private void GuardarClick(object? sender, RoutedEventArgs e){
+	//Obtenemos el objeto Titulo que está en el DataContext
+	var artista = DataContext as Artista;
+	if (artista == null) return;
+        Close(artista);
+    }
 }

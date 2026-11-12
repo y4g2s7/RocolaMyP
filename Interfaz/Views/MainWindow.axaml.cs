@@ -68,11 +68,11 @@ public partial class MainWindow : Window
 	Artista? artista = vm.datosArtista(cancion);
 	if(artista == null) return;
 	// Dependiendo del tipo abrimos que ventana
+	string nombreViejo = artista.seudonimo;
+	string realViejo = artista.nombreA;
+	int idViejo = artista.id;
+	
 	if(artista.tipo==0){
-	    string nombreViejo = artista.seudonimo;
-	    string realViejo = artista.nombreA;
-	    int idViejo = artista.id;
-	    
 	    var ventana = new PersonaWindow();
             // Le pasamos los datos del artista a la ventana
             ventana.DataContext = artista; 
@@ -83,9 +83,15 @@ public partial class MainWindow : Window
 		vm.ActualizarPersona(personaModificada, nombreViejo, realViejo);
 	    }
 	} else if(artista.tipo==1){
+	    string inicioViejo = artista.inicioB;
 	    var ventana = new BandaWindow();
             ventana.DataContext = artista;
-            ventana.ShowDialog(this);
+            var personaModificada = await ventana.ShowDialog<Artista>(this);
+
+	    if (personaModificada != null){
+	        vm.ActualizarArtista(personaModificada,idViejo);
+		vm.ActualizarBanda(personaModificada, nombreViejo, inicioViejo);
+	    }
 	    
 	} else if(artista.tipo==2){
 	    var ventana = new DesconocidoWindow();
@@ -93,8 +99,7 @@ public partial class MainWindow : Window
             var artistaModificado = await ventana.ShowDialog<Artista>(this);
 	    // Si el usuario guardo actualizamos
 	    if (artistaModificado != null){
-		int idViejo = artistaModificado.id;
-		// Le mandamos al modelo para modificar
+	        // Le mandamos al modelo para modificar
 		vm.ActualizarArtista(artistaModificado,idViejo);
 	    }
 	}
