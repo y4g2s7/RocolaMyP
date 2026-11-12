@@ -47,11 +47,11 @@ public class BaseDeDatos{
 
 	using(var comando = conexion.CreateCommand()){
 	    // Le ponemos el texto
-	    comando.CommandText = "SELECT id_rola FROM rolas Where title = @titulo";
-	    comando.Parameters.AddWithValue("@titulo", f.titulo);
+	    comando.CommandText = "SELECT id_rola FROM rolas WHERE path = @ruta";
+	    comando.Parameters.AddWithValue("@ruta", f.rpath);
 	    // Vemos que nos dice
 	    using(var lector = comando.ExecuteReader()){
-		// Si nos dio algo es porque el performer ya existe, asi que terminamos
+		// Si nos dio algo es porque la cancion con esa ruta  ya existe, asi que terminamos
 		if (lector.Read()){
 		    return;
 		}
