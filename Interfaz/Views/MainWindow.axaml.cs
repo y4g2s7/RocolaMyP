@@ -114,16 +114,30 @@ public partial class MainWindow : Window
     
     }
     
-    private void RegistrarArtistaClick(object? sender, RoutedEventArgs e){
+    private async void RegistrarArtistaClick(object? sender, RoutedEventArgs e){
 	var vm = DataContext as MainWindowViewModel;
 	// Obtenemos la cancion seleccionada que vive en MainWindowViewModel
 	var cancion = vm?.CancionSeleccionada;
 	if (cancion == null || vm == null) return;
+
 	Artista? artista = vm.datosArtista(cancion);
 	if(artista == null) return;
+	string nombreViejo = artista.seudonimo;
+	
 	var ventana = new RegistrarArtistaWindow();
 	ventana.DataContext = artista; 
-	ventana.ShowDialog(this);
+	var artistaModificado = await ventana.ShowDialog<Artista>(this);
+    
+	// Si el usuario terminó el flujo y guardo, actualizamos
+	if(artistaModificado != null){
+	    if(artistaModificado.tipo == 0){
+		vm.agregarPersona(nombreViejo, artistaModificado);
+	    } if(artistaModificado.tipo == 1){
+		vm.agregarBanda(nombreViejo, artistaModificado);
+	    } if(artistaModificado.tipo ==2){
+		vm.agregarDesconocido(nombreViejo, artistaModificado);
+	    }
+	}
     } 
 
     private async void AgregarPersonaClick(object? sender, RoutedEventArgs e){

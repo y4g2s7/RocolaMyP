@@ -49,21 +49,67 @@ public partial class MainWindowViewModel : ViewModelBase
 	int id = cf.id;
 	return BaseDatos.getDatosArtista(id);
     }
-
-    public static void agregarPersona(string nombreViejo, Artista artistaModificado){
+    
+    public void agregarPersona(string nombreViejo, Artista artistaModificado){
 	BaseDatos.eliminarBanda(nombreViejo);
 	BaseDatos.registrarArtista(artistaModificado);   
+	var cancionesAfectadas = canciones.Where(c => c.performer == nombreViejo).ToList();
+    
+	foreach(var cancionVieja in cancionesAfectadas){
+	    int index = canciones.IndexOf(cancionVieja);
+	    var cancionNueva = new CancionFila
+		{
+		    id = cancionVieja.id,
+		    id_performer = artistaModificado.id,
+		    titulo = cancionVieja.titulo,
+		    genero = cancionVieja.genero,
+		    album = cancionVieja.album,
+		    performer = artistaModificado.seudonimo 
+		};
+	    canciones[index] = cancionNueva;
+	}
     }
     
-    public static void agregarBanda(string nombreViejo, Artista artistaModificado){
+    public void agregarBanda(string nombreViejo, Artista artistaModificado){
 	BaseDatos.eliminarPersona(nombreViejo);
 	BaseDatos.registrarArtista(artistaModificado);
+	var cancionesAfectadas = canciones.Where(c => c.performer == nombreViejo).ToList();
+    
+	foreach(var cancionVieja in cancionesAfectadas){
+	    int index = canciones.IndexOf(cancionVieja);
+	    var cancionNueva = new CancionFila
+		{
+		    id = cancionVieja.id,
+		    id_performer = artistaModificado.id,
+		    titulo = cancionVieja.titulo,
+		    genero = cancionVieja.genero,
+		    album = cancionVieja.album,
+		    performer = artistaModificado.seudonimo 
+		};
+	    canciones[index] = cancionNueva;
+	}
     }
 
-    public static void agregarDesconocido(string artista, Artista artistaModificado){
+    public void agregarDesconocido(string artista, Artista artistaModificado){
 	BaseDatos.eliminarBanda(artista);
 	BaseDatos.eliminarPersona(artista);
 	BaseDatos.registrarArtista(artistaModificado);
+
+        var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
+    
+	foreach(var cancionVieja in cancionesAfectadas){
+	    int index = canciones.IndexOf(cancionVieja);
+	    var cancionNueva = new CancionFila
+		{
+		    id = cancionVieja.id,
+		    id_performer = artistaModificado.id,
+		    titulo = cancionVieja.titulo,
+		    genero = cancionVieja.genero,
+		    album = cancionVieja.album,
+		    performer = artistaModificado.seudonimo 
+		};
+	    canciones[index] = cancionNueva;
+	}
     }
 
     public Album? datosAlbum(CancionFila cf){
