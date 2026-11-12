@@ -2,8 +2,10 @@
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-namespace Interfaz.ViewModels;
 using Interfaz.Models;
+using System.Linq; // Asegúrate de tener este using arriba
+
+namespace Interfaz.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
@@ -78,5 +80,27 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public static void eliminarPersonaGrupo(int id, string nombre){
 	BaseDatos.EliminarPersonaDeGrupo(id, nombre);
+    }
+
+    public void ActualizarCancionEnLista(Titulo tituloEditado){
+	//  Buscamos la posición de la canción en la lista
+	var cancionOriginal = canciones.FirstOrDefault(c => c.id == tituloEditado.id_rola);
+
+	if(cancionOriginal != null){
+	    int index = canciones.IndexOf(cancionOriginal);
+	    //Creamos una NUEVA instancia de CancionFila con los datos actualizados
+	    var cancionNueva = new CancionFila
+		{
+		    id = cancionOriginal.id,
+		    titulo = tituloEditado.titulo,
+		    genero = tituloEditado.genero,
+		    // Conservamos los datos que no se editan en esa ventana
+		    performer = cancionOriginal.performer, 
+		    album = cancionOriginal.album
+		};
+	    //Reemplazamos el objeto viejo por el nuevo en esa posición
+	    canciones[index] = cancionNueva;
+	}
+        BaseDatos.ActualizarCancion(tituloEditado);
     }
 }

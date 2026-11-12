@@ -4,84 +4,95 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Interfaz.Views.BarraCancionActual.Title.TituloWindow"
-	xmlns:models="using:Interfaz.Models"
-	x:DataType="models:Titulo"
-	Title="Información"
-	Width="500" Height="400"
+        xmlns:models="using:Interfaz.Models"
+        x:DataType="models:Titulo"
+        Title="Información"
+        Width="500" Height="450"
         Background="#2B1D14">
   <DockPanel>
   
     <StackPanel DockPanel.Dock="Top" Margin="20">
-      
-      <TextBlock Text="Presiona para editar"
-		 Foreground="#FFFFFF" 
+      <TextBlock Text="Edita los datos de la canción"
+                 Foreground="#FFFFFF" 
                  Margin="0,0,0,8"
-		 HorizontalAlignment="Center"/>
-   
+                 HorizontalAlignment="Center"/>
     </StackPanel>
 
-
-    <StackPanel DockPanel.Dock="Bottom" Margin="20, 0, 20, 20">
+    <!-- Botones de acción abajo -->
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" 
+                HorizontalAlignment="Right" Spacing="10" Margin="20, 0, 20, 20">
+        <Button Content="GUARDAR" 
+                Click="GuardarClick"
+                HorizontalContentAlignment="Center"
+                Background="#4E342E" 
+                Foreground="#F5F5DC" 
+                Padding="10,10"/>
         <Button Content="SALIR" 
-		Click = "CerrarVentana"
-		HorizontalAlignment="Right" 
+                Click="CerrarVentana"
                 HorizontalContentAlignment="Center"
                 Background="#8A3220" 
                 Foreground="#F5F5DC" 
-                Padding="10"/>
+                Padding="10,10"/>
     </StackPanel>
     
     <Grid ColumnDefinitions="Auto, *" Margin="20">
 
+      <!-- Imágenes -->
       <StackPanel Grid.Column="0" 
                   Orientation="Vertical" 
-                  Spacing="4" 
+                  Spacing="10" 
                   VerticalAlignment="Center"
-                  Margin="0,0,7,0">
-        
-        <!-- Imagenes en la carpeta Assets -->
+                  Margin="0,0,15,0">
         <Image Source="avares://Interfaz/Assets/notas.png" Width="50" Height="50" />
-        <Image Source="avares://Interfaz/Assets/track.png" Width="55" Height="55" />
+        <Image Source="avares://Interfaz/Assets/track.png" Width="60" Height="60" />
         <Image Source="avares://Interfaz/Assets/calendario.png" Width="70" Height="70" />
-        <Image Source="avares://Interfaz/Assets/genero.png" Width="85" Height="55" />
+        <Image Source="avares://Interfaz/Assets/genero.png" Width="65" Height="65" />
       </StackPanel>
-        <!-- Botones en la segunda columna -->
-        <StackPanel Grid.Column="1" 
-                    Orientation="Vertical" 
-                    Spacing="18"
-                    VerticalAlignment="Center">
+
+      <!-- Cajas de texto con su etiqueta -->
+      <StackPanel Grid.Column="1" 
+                  Orientation="Vertical" 
+                  Spacing="10"
+                  VerticalAlignment="Center">
 	  
-	    <Button Content="{Binding titulo, StringFormat='Título: {0}'}" 
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E" 
-                    Foreground="#F5F5DC" 
-                    Padding="10"/>
+        <!-- Título -->
+        <StackPanel Spacing="2">
+            <TextBlock Text="Título:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding titulo, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+	<!-- Para el Track -->
+	<TextBlock Text="Track:" Foreground="#F5F5DC" FontWeight="Bold"/>
+	<NumericUpDown Value="{Binding track, Mode=TwoWay}"
+		       ShowButtonSpinner="False"
+		       AllowSpin="False"
+		       Background="#4E342E" 
+		       Foreground="#F5F5DC"
+		       HorizontalContentAlignment="Center"/>
+
+	<!-- Para el Año -->
+	<TextBlock Text="Año:" Foreground="#F5F5DC" FontWeight="Bold"/>
+	<NumericUpDown Value="{Binding track, Mode=TwoWay}"
+		       ShowButtonSpinner="False"
+		       AllowSpin="False"
+		       Background="#4E342E" 
+		       Foreground="#F5F5DC"
+		       HorizontalContentAlignment="Center"/>
+        <!-- Género -->
+        <StackPanel Spacing="2">
+            <TextBlock Text="Género:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding genero, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
+        </StackPanel>
 	    
-            <Button Content="{Binding track, StringFormat='Track: {0}'}" 
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E" 
-                    Foreground="#F5F5DC" 
-                    Padding="10"/>
-	    
-            <Button Content="{Binding year, StringFormat='Año: {0}'}" 
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E"
-		    Foreground="#F5F5DC" 
-                    Padding="10"/>
-	    
-            <Button Content="{Binding genero, StringFormat='Género: {0}'}"
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E" 
-                    Foreground="#F5F5DC" 
-                    Padding="10"/>
-	    
-            
-	</StackPanel>
+      </StackPanel>
     </Grid>
   </DockPanel>
-  
 </Window>

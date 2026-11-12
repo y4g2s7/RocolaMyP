@@ -35,16 +35,28 @@ public partial class MainWindow : Window
 
     // Metodo que se activa cuando le dan click al boton de el nombre de la cancion
     // 	en la barra de la cancion actual
-    private void TituloClick(object? sender, RoutedEventArgs e) {
+    private async void TituloClick(object? sender, RoutedEventArgs e) {
 	var vm = DataContext as MainWindowViewModel;
 	// Obtenemos la cancion seleccionada que vive en MainWindowViewModel
 	var cancion = vm?.CancionSeleccionada;
 	if (cancion == null || vm == null) return;
-	
+
+	// Obtenemos el titulo donde viene la informacion para mostrar
 	Titulo? informacion = vm.datosTitulo(cancion);
 	if(informacion == null) return;
 	
-	new TituloWindow(informacion).ShowDialog(this); 
+	//Creamos la ventana
+	var ventana = new TituloWindow(informacion);
+    
+	//Esperamos a que se cierre y guardamos la modificacion
+	var tituloModificado = await ventana.ShowDialog<Titulo>(this); 
+	
+	// Si el usuario guardo actualizamos
+	if (tituloModificado != null){
+	    // Le mandamos al modelo para modificar
+	    vm.ActualizarCancionEnLista(tituloModificado);
+	}
+    
     }
     
     private void PerformerClick(object? sender, RoutedEventArgs e) {

@@ -71,7 +71,8 @@ public class BaseDatos{
 			    titulo = reader.IsDBNull(0) ? "" : reader.GetString(0),
 			    track = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
 			    year = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
-			    genero = reader.IsDBNull(3) ? "" : reader.GetString(3)
+			    genero = reader.IsDBNull(3) ? "" : reader.GetString(3),
+			    id_rola=id
 			};
 		    return titulo;
 		}
@@ -357,4 +358,24 @@ public class BaseDatos{
 
 	comando.ExecuteNonQuery();
     }
+
+    public static void ActualizarCancion(Titulo cancion){
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+
+	comando.CommandText = @"
+        UPDATE rolas 
+        SET title = @titulo, track = @track, year = @year, genre = @genero 
+        WHERE id_rola = @id";
+
+	comando.Parameters.AddWithValue("@titulo", cancion.titulo);
+	comando.Parameters.AddWithValue("@track", cancion.track ?? 0);
+	comando.Parameters.AddWithValue("@year", cancion.year ?? 0);
+	comando.Parameters.AddWithValue("@genero", cancion.genero);
+	comando.Parameters.AddWithValue("@id", cancion.id_rola);
+
+	comando.ExecuteNonQuery();
+    }
+
+    
 }
