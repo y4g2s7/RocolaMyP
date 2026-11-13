@@ -3,7 +3,9 @@ using System.IO;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Interfaz.Models;
-using System.Linq; // Asegúrate de tener este using arriba
+using System.Linq; 
+using CommunityToolkit.Mvvm.Input;
+
 
 namespace Interfaz.ViewModels;
 
@@ -43,12 +45,12 @@ public partial class MainWindowViewModel : ViewModelBase
     public Titulo? datosTitulo (CancionFila cf){
 	int id = cf.id;
 	return BaseDatos.getDatosTitulo(id);
-    }
+					       }
 
     public Artista? datosArtista(CancionFila cf){
 	int id = cf.id;
 	return BaseDatos.getDatosArtista(id);
-    }
+						}
     
     public void agregarPersona(string nombreViejo, Artista artistaModificado){
 	BaseDatos.eliminarBanda(nombreViejo);
@@ -95,22 +97,22 @@ public partial class MainWindowViewModel : ViewModelBase
 	BaseDatos.eliminarPersona(artista);
 	BaseDatos.registrarArtista(artistaModificado);
 
-        var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
+var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
     
-	foreach(var cancionVieja in cancionesAfectadas){
-	    int index = canciones.IndexOf(cancionVieja);
-	    var cancionNueva = new CancionFila
-		{
-		    id = cancionVieja.id,
-		    id_performer = artistaModificado.id,
-		    titulo = cancionVieja.titulo,
-		    genero = cancionVieja.genero,
-		    album = cancionVieja.album,
-		    performer = artistaModificado.seudonimo 
-		};
-	    canciones[index] = cancionNueva;
-	}
+    foreach(var cancionVieja in cancionesAfectadas){
+	int index = canciones.IndexOf(cancionVieja);
+	var cancionNueva = new CancionFila
+	    {
+		id = cancionVieja.id,
+		id_performer = artistaModificado.id,
+		titulo = cancionVieja.titulo,
+		genero = cancionVieja.genero,
+		album = cancionVieja.album,
+		performer = artistaModificado.seudonimo 
+	    };
+	canciones[index] = cancionNueva;
     }
+									     }
 
     public Album? datosAlbum(CancionFila cf){
 	int id = cf.id;
@@ -211,6 +213,47 @@ public partial class MainWindowViewModel : ViewModelBase
 		};
 
 	    canciones[index] = cancionNueva;
+	}
+    }
+    //Variables para mostrar/ocultar el panel
+    [ObservableProperty]
+    private bool _mostrarPanelBusqueda = false;
+
+    //Variables para los filtros
+    [ObservableProperty] private string _buscarTitulo = "";
+    [ObservableProperty] private string _buscarArtista = "";
+    [ObservableProperty] private string _buscarAlbum = "";
+    [ObservableProperty] private string _buscarGenero = "";
+
+    //Comando para abrir/cerrar el panel
+    [RelayCommand]
+    private void ToggleBusqueda(){
+	MostrarPanelBusqueda = !MostrarPanelBusqueda;
+    }
+
+    //El metodo para la busqueda
+    [RelayCommand]
+    private void EjecutarBusqueda(){
+	var resultados = BaseDatos.BuscarCanciones(BuscarTitulo, BuscarArtista, BuscarAlbum, BuscarGenero);
+	// Limpiamos la lista de canciones y metemos las que buscamos
+	canciones.Clear();
+	foreach(var cancion in resultados){
+	    canciones.Add(cancion);
+	}
+    }
+
+    //metodo para limpiar y mostrar todo de nuevo
+    [RelayCommand]
+    private void LimpiarBusqueda(){
+	BuscarTitulo = "";
+	BuscarArtista = "";
+	BuscarAlbum = "";
+	BuscarGenero = "";
+	// Recargar todas las canciones
+	var todas = BaseDatos.ObtenerCanciones();
+	canciones.Clear();
+	foreach(var cancion in todas){
+	    canciones.Add(cancion);
 	}
     }
 }

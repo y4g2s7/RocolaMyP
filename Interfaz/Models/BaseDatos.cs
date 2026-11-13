@@ -650,4 +650,56 @@ public class BaseDatos{
 	    throw;
 	}
     }
+
+    public static List<CancionFila> BuscarCanciones(string titulo, string artista, string album, string genero){
+	var lista = new List<CancionFila>();
+	using var conexion = conectar();
+	using var comando = conexion.CreateCommand();
+
+	// Consulta base
+	string sql = @"
+        SELECT r.id_rola, r.title, r.genre, p.name, a.name, r.id_performer, r.id_album
+        FROM rolas r
+        LEFT JOIN performers p ON r.id_performer = p.id_performer
+        LEFT JOIN albums a     ON r.id_album = a.id_album
+        WHERE 1=1";
+
+	// Si el usuario escribio algo en Título, lo agregamos
+	if(!string.IsNullOrWhiteSpace(titulo)){
+	    sql += " AND r.title LIKE @titulo";
+	    comando.Parameters.AddWithValue("@titulo", $"%{titulo}%");
+	}
+
+	if(!string.IsNullOrWhiteSpace(artista)){
+	    sql += " AND p.name LIKE @artista";
+	    comando.Parameters.AddWithValue("@artista", $"%{artista}%");
+	}
+
+	if(!string.IsNullOrWhiteSpace(album)){
+	    sql += " AND a.name LIKE @album";
+	    comando.Parameters.AddWithValue("@album", $"%{album}%");
+	}
+
+	if(!string.IsNullOrWhiteSpace(genero)){
+	    sql += " AND r.genre LIKE @genero";
+	    comando.Parameters.AddWithValue("@genero", $"%{genero}%");
+	}
+
+	comando.CommandText = sql;
+
+	using var reader = comando.ExecuteReader();
+	while(reader.Read()){
+	    lista.Add(new CancionFila
+	    {
+		id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+		titulo = reader.IsDBNull(1) ? "" : reader.GetString(1),
+		genero = reader.IsDBNull(2) ? "" : reader.GetString(2),
+		performer = reader.IsDBNull(3) ? "" : reader.GetString(3),
+		album = reader.IsDBNull(4) ? "" : reader.GetString(4),
+		id_performer = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
+		id_album = reader.IsDBNull(6) ? 0 : reader.GetInt32(6)
+	    });
+	}
+	return lista;
+    }
 }

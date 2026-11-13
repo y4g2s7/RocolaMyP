@@ -162,4 +162,5 @@ public partial class MainWindow : Window
 	    MainWindowViewModel.agregarNuevaPersona(artistaNuevo); 
 	}
     }
+
 }

@@ -10,26 +10,82 @@
         Title="Interfaz">
 
   <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:MainWindowViewModel/>
   </Design.DataContext>
 
   <DockPanel>
-    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+    <!-- Fila de botones y Panel desplegable -->
+    <StackPanel DockPanel.Dock="Top" Margin="10">
+        
+      <!--Fila de botones principales -->
+        <DockPanel Margin="0,0,0,5">
+            
+            <!-- Boton de Busqueda a la Derecha -->
+            <Button DockPanel.Dock="Right"
+                    Content="Búsqueda Avanzada" 
+                    Command="{Binding ToggleBusquedaCommand}"
+                    Background="#666666" Foreground="#FFFFFF" 
+                    Padding="10,5"/>
+            
+            <!-- Botones de la Izquierda -->
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Content="Minar" 
+                        Click="AbrirVentanaMinar"
+                        Background="#666666" Foreground="#FFFFFF" 
+                        Padding="10,5"/>
+                
+                <Button Content="Registrar Artista" 
+                        Click="RegistrarArtistaClick"
+                        Background="#666666" Foreground="#FFFFFF" 
+                        Padding="10,5"/>
+                
+                <Button Content="Agregar Persona" 
+                        Click="AgregarPersonaClick"
+                        Background="#666666" Foreground="#FFFFFF" 
+                        Padding="10,5"/>
+            </StackPanel>
 
-      <Button Content="Minar"
-              Margin="4"
-              Click="AbrirVentanaMinar"/>
-      
-      <Button Content="Registrar Artista"
-              Margin="4"
-              Click="RegistrarArtistaClick"/>
+        </DockPanel>
 
-      <Button Content="Agregar Persona"
-              Margin="4"
-              Click="AgregarPersonaClick"/>
-      
+        <!-- Panel de Busqueda-->
+        <Border IsVisible="{Binding MostrarPanelBusqueda}" 
+                Background="#3E2723" CornerRadius="5" 
+                Padding="8" Margin="0,5,0,0"
+                BorderBrush="#6D4C41" BorderThickness="1">
+            
+            <Grid ColumnDefinitions="*, *, *, *, Auto">
+                
+                <StackPanel Grid.Column="0" Margin="3,0">
+                    <TextBlock Text="Título:" Foreground="#F5F5DC" FontSize="12" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding BuscarTitulo, Mode=TwoWay}" Height="26"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="3,0">
+                    <TextBlock Text="Artista:" Foreground="#F5F5DC" FontSize="12" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding BuscarArtista, Mode=TwoWay}" Height="26"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Margin="3,0">
+                    <TextBlock Text="Álbum:" Foreground="#F5F5DC" FontSize="12" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding BuscarAlbum, Mode=TwoWay}" Height="26"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Margin="3,0">
+                    <TextBlock Text="Género:" Foreground="#F5F5DC" FontSize="12" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding BuscarGenero, Mode=TwoWay}" Height="26"/>
+                </StackPanel>
+
+                <!-- Botones de Acción de Búsqueda -->
+                <StackPanel Grid.Column="4" Orientation="Horizontal" 
+                            VerticalAlignment="Bottom" Margin="5,0,0,0" Spacing="5">
+                    <Button Content="Buscar" Command="{Binding EjecutarBusquedaCommand}" 
+                            Background="#4E342E" Foreground="#F5F5DC" Padding="10,4"/>
+                    <Button Content="Limpiar" Command="{Binding LimpiarBusquedaCommand}" 
+                            Background="#8A3220" Foreground="#F5F5DC" Padding="10,4"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
     </StackPanel>
     
     <!-- Barra para la cancion actual -->
@@ -39,42 +95,43 @@
             BorderBrush="#FFFFFF"       
             Background="#2B1D14">
       
-	<!-- Grid de 3 columnas -->
-	<Grid ColumnDefinitions="Auto, Auto *">
+      <!-- Grid de 3 columnas (Corregido: faltaba una coma) -->
+      <Grid ColumnDefinitions="Auto, Auto, *">
           
           <!-- La Imagen en la primera columna -->
           <Image Grid.Column="0" 
-		 Source="avares://Interfaz/Assets/disco.png"
-		 Width="120" 
-		 Height="120" 
-		 Stretch="UniformToFill"
-		 Margin="0,0,15,0"
-		 VerticalAlignment="Center"/>
-	  <!-- Columna 1: NUEVA - Iconos pequeños apilados -->
-        <StackPanel Grid.Column="1" 
-                    Orientation="Vertical" 
-                    Spacing="8" 
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"> <!-- Margen a la derecha para separar del texto -->
-            
-            <!-- Nota: Asegúrate de tener estas imágenes en tu carpeta Assets -->
-            <Image Source="avares://Interfaz/Assets/notas.png" Width="40" Height="40" />
-            <Image Source="avares://Interfaz/Assets/microfono.png" Width="35" Height="45" />
-            <Image Source="avares://Interfaz/Assets/carpeta.png" Width="45" Height="45" />
-        </StackPanel>
-          <!-- Botones en la segunda columna -->
+                 Source="avares://Interfaz/Assets/disco.png"
+                 Width="120" 
+                 Height="120" 
+                 Stretch="UniformToFill"
+                 Margin="0,0,15,0"
+                 VerticalAlignment="Center"/>
+                 
+          <!-- Columna 1: Iconos pequeños apilados -->
+          <StackPanel Grid.Column="1" 
+                      Orientation="Vertical" 
+                      Spacing="8" 
+                      VerticalAlignment="Center"
+                      Margin="0,0,10,0">
+                
+                <Image Source="avares://Interfaz/Assets/notas.png" Width="40" Height="40" />
+                <Image Source="avares://Interfaz/Assets/microfono.png" Width="35" Height="45" />
+                <Image Source="avares://Interfaz/Assets/carpeta.png" Width="45" Height="45" />
+          </StackPanel>
+          
+          <!-- Botones en la tercera columna -->
           <StackPanel Grid.Column="2" 
                       Orientation="Vertical" 
                       Spacing="18"
                       VerticalAlignment="Center">
-	    
+        
             <!-- Boton para el titulo de la cancion -->
             <Button Content="{Binding CancionSeleccionada.titulo}"
                     MinWidth="1"
                     FontSize="18"
                     Click="TituloClick"
                     Padding="6,6"
-		    Background="Transparent" 
+                    Background="Transparent" 
                     BorderThickness="0"
                     HorizontalAlignment="Left" /> 
                     
@@ -96,42 +153,42 @@
                     BorderThickness="0"
                     HorizontalAlignment="Left" />
           </StackPanel>
-	</Grid>
+        </Grid>
       </Border>
-      <!-- Lista principal de las canciones conectada con la
-	   ObservableCollection<CancionFila> canciones de MainWindowViewModel	   
-	   Avisamos de la cancion seleccionada para la barra de abajo -->
-      <DataGrid ItemsSource="{Binding canciones}" 
-	      SelectedItem="{Binding CancionSeleccionada, Mode=TwoWay}"
-	      AutoGenerateColumns="False"
-	      IsReadOnly="True"
-	      GridLinesVisibility="Horizontal" 
-              HorizontalGridLinesBrush="#4D3E32"
-	      Background="#735D4B"      
-	      RowBackground="#735D4B"           
-	      Foreground="#FFFFFF">
-      <!-- Estilos -->
-      <DataGrid.Styles>
-	<!-- Centra el texto de los encabezados -->
-	<Style Selector="DataGridColumnHeader">
-          <Setter Property="HorizontalContentAlignment" Value="Center"/>
-	   <Setter Property="Background" Value="#3D3128"/> 
-           <Setter Property="Foreground" Value="#F5F5DC"/> 
-	</Style>
-	
-	<!-- Centra el texto de las celdas -->
-	<Style Selector="DataGridCell TextBlock">
-          <Setter Property="HorizontalAlignment" Value="Center"/>
-          <Setter Property="VerticalAlignment" Value="Center"/>
-	</Style>
-      </DataGrid.Styles>
 
-      <DataGrid.Columns>
-	<DataGridTextColumn Header="Título"  Width="*"  Binding="{Binding titulo}"/>
-	<DataGridTextColumn Header="Artista" Width="*"  Binding="{Binding performer}"/>
-	<DataGridTextColumn Header="Álbum"   Width="*"  Binding="{Binding album}"/>
-	<DataGridTextColumn Header="Género"  Width="*"  Binding="{Binding genero}"/>
-      </DataGrid.Columns>
-    </DataGrid>
+      <!-- Lista principal de las canciones -->
+      <DataGrid ItemsSource="{Binding canciones}" 
+                SelectedItem="{Binding CancionSeleccionada, Mode=TwoWay}"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                GridLinesVisibility="Horizontal" 
+                HorizontalGridLinesBrush="#4D3E32"
+                Background="#735D4B"      
+                RowBackground="#735D4B"           
+                Foreground="#FFFFFF">
+                
+        <!-- Estilos -->
+        <DataGrid.Styles>
+          <!-- Centra el texto de los encabezados -->
+          <Style Selector="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#3D3128"/> 
+            <Setter Property="Foreground" Value="#F5F5DC"/> 
+          </Style>
+          
+          <!-- Centra el texto de las celdas -->
+          <Style Selector="DataGridCell TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+          </Style>
+        </DataGrid.Styles>
+
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Título"  Width="*"  Binding="{Binding titulo}"/>
+          <DataGridTextColumn Header="Artista" Width="*"  Binding="{Binding performer}"/>
+          <DataGridTextColumn Header="Álbum"   Width="*"  Binding="{Binding album}"/>
+          <DataGridTextColumn Header="Género"  Width="*"  Binding="{Binding genero}"/>
+        </DataGrid.Columns>
+      </DataGrid>
   </DockPanel>
 </Window>
