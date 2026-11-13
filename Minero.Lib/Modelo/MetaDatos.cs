@@ -7,10 +7,11 @@ using TagLib;
 public class MetaDatos{
     // Metodo que busca los mp3 en el direcotorio, para guardarlos en una lista
     public static void procesar(string carpeta, List<Ficha> fichas ){
-        // Buscamos recursivamente
+	int contadorDesconocidos = 0;
+	// Buscamos recursivamente
 	foreach(string ruta in Directory.EnumerateFiles(carpeta, "*.mp3", SearchOption.AllDirectories)){
 	    // Creamos la Ficha con el metodo datos
-	    Ficha? f = datos(ruta);
+	    Ficha? f = datos(ruta, ref contadorDesconocidos);
 	    //Si es null es porque hubo un error y pudimos leer el mp3, asi que no lo agregamos a la lista
 	    if(f != null) fichas.Add(f);
 	   
@@ -18,7 +19,7 @@ public class MetaDatos{
         
     }
     
-    private static Ficha? datos(string ruta){
+    private static Ficha? datos(string ruta, ref int contador){
 	try{
 	    // Abrimos el mp3
 	    using(TagLib.File archivo = TagLib.File.Create(ruta)){
@@ -35,15 +36,15 @@ public class MetaDatos{
 		Ficha f = new Ficha();
 		// Agregamos los parametros de la etiqueta de un mp3 a la Ficha
 		string titulo = etiqueta.Title;
-		desconocer(ref titulo);
+		desconocer(ref titulo, ref contador);
 		f.titulo = titulo;
 		    
 		string genero = etiqueta.FirstGenre;
-	        desconocer(ref genero);
+	        desconocer(ref genero, ref contador);
 		f.genero = genero;
 		
 		string performer = etiqueta.FirstPerformer;
-		desconocer(ref performer);
+		desconocer(ref performer, ref contador);
 		f.performer = performer;
 		
 		string album = etiqueta.Album;
@@ -75,9 +76,10 @@ public class MetaDatos{
 	}
     }
     // Metodo para verificar si un parametro es null o vacio para rellenarlo como Unknown
-    private static void desconocer(ref string parametro){
+    private static void desconocer(ref string parametro,ref int contador){
 	if(string.IsNullOrWhiteSpace(parametro)){
-	    parametro = "Unknown";
+	    contador ++;
+	    parametro = $"Unknown {contador}";
 	}
     }
     
