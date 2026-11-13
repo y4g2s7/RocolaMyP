@@ -14,7 +14,7 @@ public class BaseDatos{
 	using (var comando = conexion.CreateCommand())
 	{
 	    comando.CommandText = @"
-    SELECT r.id_rola, r.title, r.genre, p.name, a.name, r.id_performer, r.id_album
+    SELECT r.id_rola, r.title, r.genre, p.name, a.name, r.id_performer, r.id_album, r.path
     FROM rolas r
     LEFT JOIN performers p ON r.id_performer = p.id_performer
     LEFT JOIN albums a     ON r.id_album = a.id_album";
@@ -29,7 +29,8 @@ public class BaseDatos{
 			    performer = reader.IsDBNull(3) ? "" : reader.GetString(3),
 			    album = reader.IsDBNull(4) ? "" : reader.GetString(4),
 			    id_performer = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
-			    id_album = reader.IsDBNull(6) ? 0 : reader.GetInt32(6) 
+			    id_album = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
+			    path = reader.IsDBNull(7) ? "" : reader.GetString(7)
 			};
 
 		    lista.Add(cancion);
@@ -658,7 +659,7 @@ public class BaseDatos{
 
 	// Consulta base
 	string sql = @"
-        SELECT r.id_rola, r.title, r.genre, p.name, a.name, r.id_performer, r.id_album
+        SELECT r.id_rola, r.title, r.genre, p.name, a.name, r.id_performer, r.id_album, r.path
         FROM rolas r
         LEFT JOIN performers p ON r.id_performer = p.id_performer
         LEFT JOIN albums a     ON r.id_album = a.id_album
@@ -697,7 +698,8 @@ public class BaseDatos{
 		performer = reader.IsDBNull(3) ? "" : reader.GetString(3),
 		album = reader.IsDBNull(4) ? "" : reader.GetString(4),
 		id_performer = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
-		id_album = reader.IsDBNull(6) ? 0 : reader.GetInt32(6)
+		id_album = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
+		path = reader.IsDBNull(7) ? "" : reader.GetString(7)
 	    });
 	}
 	return lista;

@@ -95,8 +95,8 @@
             BorderBrush="#FFFFFF"       
             Background="#2B1D14">
       
-      <!-- Grid de 3 columnas (Corregido: faltaba una coma) -->
-      <Grid ColumnDefinitions="Auto, Auto, *">
+      <!-- Grid de 4 columnas -->
+      <Grid ColumnDefinitions="Auto, Auto, *, Auto">
           
           <!-- La Imagen en la primera columna -->
           <Image Grid.Column="0" 
@@ -152,8 +152,28 @@
                     Background="Transparent" 
                     BorderThickness="0"
                     HorizontalAlignment="Left" />
-          </StackPanel>
-        </Grid>
+	     </StackPanel>
+	    <StackPanel Grid.Column="3" Orientation="Horizontal" 
+			VerticalAlignment="Center" Spacing="10" Margin="20,0,0,0">
+              <Button Content="▶" 
+		      Command="{Binding ReproducirCommand}" 
+		      Background="#4E342E" Foreground="White" 
+		      FontSize="32" 
+		      Width="60" Height="60" 
+		      CornerRadius="30"
+		      HorizontalContentAlignment="Center"
+		      VerticalContentAlignment="Center"/>
+	      
+	      <Button Content="⏸" 
+		      Command="{Binding PausarCommand}" 
+		      Background="#4E342E" Foreground="White" 
+		      FontSize="32" 
+		      Width="60" Height="60" 
+		      CornerRadius="30"
+		      HorizontalContentAlignment="Center"
+		      VerticalContentAlignment="Center"/>
+            </StackPanel>
+      </Grid>
       </Border>
 
       <!-- Lista principal de las canciones -->

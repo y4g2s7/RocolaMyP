@@ -7,5 +7,5 @@ public class CancionFila{
     public int id { get; set; }
     public int id_performer { get; set; }
     public int id_album { get; set; }
-    
+    public string path { get; set; } = ""; 
 } 

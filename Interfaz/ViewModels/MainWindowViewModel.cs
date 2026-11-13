@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Interfaz.Models;
 using System.Linq; 
 using CommunityToolkit.Mvvm.Input;
-
+using LibVLCSharp.Shared;
+using System; 
 
 namespace Interfaz.ViewModels;
 
@@ -13,10 +14,6 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     //Coleccion para guardar las canciones y mostrarlas
     public ObservableCollection<CancionFila> canciones { get; } = new();  
-
-    //Constructor y agregamos dos canciones de prueba
-    public MainWindowViewModel(){	
-    }
     
     // Metodo que llama a ObtenerCanciones que nos da una lista de CancionFila
     // para agregarlo a canciones
@@ -63,6 +60,8 @@ public partial class MainWindowViewModel : ViewModelBase
 		{
 		    id = cancionVieja.id,
 		    id_performer = artistaModificado.id,
+		    id_album = cancionVieja.id_album,
+		    path = cancionVieja.path, 
 		    titulo = cancionVieja.titulo,
 		    genero = cancionVieja.genero,
 		    album = cancionVieja.album,
@@ -83,6 +82,8 @@ public partial class MainWindowViewModel : ViewModelBase
 		{
 		    id = cancionVieja.id,
 		    id_performer = artistaModificado.id,
+		    id_album = cancionVieja.id_album,
+		    path = cancionVieja.path,
 		    titulo = cancionVieja.titulo,
 		    genero = cancionVieja.genero,
 		    album = cancionVieja.album,
@@ -96,22 +97,24 @@ public partial class MainWindowViewModel : ViewModelBase
 	BaseDatos.eliminarBanda(artista);
 	BaseDatos.eliminarPersona(artista);
 	BaseDatos.registrarArtista(artistaModificado);
-
-var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
-    
-    foreach(var cancionVieja in cancionesAfectadas){
-	int index = canciones.IndexOf(cancionVieja);
-	var cancionNueva = new CancionFila
-	    {
-		id = cancionVieja.id,
-		id_performer = artistaModificado.id,
-		titulo = cancionVieja.titulo,
-		genero = cancionVieja.genero,
-		album = cancionVieja.album,
-		performer = artistaModificado.seudonimo 
+	
+	var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
+	
+	foreach(var cancionVieja in cancionesAfectadas){
+	    int index = canciones.IndexOf(cancionVieja);
+	    var cancionNueva = new CancionFila
+		{
+		    id = cancionVieja.id,
+		    id_performer = artistaModificado.id,
+		    id_album = cancionVieja.id_album,
+		    path = cancionVieja.path,
+		    titulo = cancionVieja.titulo,
+		    genero = cancionVieja.genero,
+		    album = cancionVieja.album,
+		    performer = artistaModificado.seudonimo 
 	    };
-	canciones[index] = cancionNueva;
-    }
+	    canciones[index] = cancionNueva;
+	}
 									     }
 
     public Album? datosAlbum(CancionFila cf){
@@ -139,12 +142,16 @@ var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
 	    //Creamos una NUEVA instancia de CancionFila con los datos actualizados
 	    var cancionNueva = new CancionFila
 		{
+		    path = cancionOriginal.path,
 		    id = cancionOriginal.id,
 		    titulo = tituloEditado.titulo,
 		    genero = tituloEditado.genero,
 		    // Conservamos los datos que no se editan en esa ventana
 		    performer = cancionOriginal.performer, 
-		    album = cancionOriginal.album
+		    album = cancionOriginal.album,
+		    id_performer = cancionOriginal.id_performer,
+		    id_album = cancionOriginal.id_album
+		    
 		};
 	    //Reemplazamos el objeto viejo por el nuevo en esa posición
 	    canciones[index] = cancionNueva;
@@ -164,8 +171,10 @@ var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
 	    // Creamos una nueva instancia para forzar al DataGrid a redibujar
 	    var cancionNueva = new CancionFila
 		{
+		    path = cancionVieja.path,        
 		    id = cancionVieja.id,
 		    id_performer = artistaEditado.id,
+		    id_album = cancionVieja.id_album,
 		    titulo = cancionVieja.titulo,
 		    genero = cancionVieja.genero,
 		    album = cancionVieja.album,
@@ -203,6 +212,7 @@ var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
 
 	    var cancionNueva = new CancionFila
 		{
+		    path = cancionVieja.path,    
 		    id = cancionVieja.id,
 		    id_performer = cancionVieja.id_performer,
 		    id_album = albumEditado.id_album,
@@ -255,5 +265,44 @@ var cancionesAfectadas = canciones.Where(c => c.performer == artista).ToList();
 	foreach(var cancion in todas){
 	    canciones.Add(cancion);
 	}
+    }
+
+// REPRODUCTOR
+    private LibVLC _libVlc;
+    private MediaPlayer _mediaPlayer;
+    private Media? _mediaActual;
+
+    public MainWindowViewModel()
+    {
+        // Inicializamos el motor
+        _libVlc = new LibVLC();
+        _mediaPlayer = new MediaPlayer(_libVlc);
+        
+        
+    }
+
+    // Comando para dar Play
+    [RelayCommand]
+    private void Reproducir()
+    {
+        if (CancionSeleccionada == null || string.IsNullOrWhiteSpace(CancionSeleccionada.path)) 
+            return;
+
+        string rutaArchivo = CancionSeleccionada.path;
+
+        // Si es una canción diferente a la que estaba sonando
+        if(_mediaActual == null || _mediaActual.Mrl != rutaArchivo){
+            _mediaActual = new Media(_libVlc, new Uri(rutaArchivo));
+            _mediaPlayer.Play(_mediaActual);
+        }
+        else{
+            _mediaPlayer.Play(); 
+        }
+    }
+
+    //Comando para Pausar
+    [RelayCommand]
+    private void Pausar(){
+        _mediaPlayer.Pause();
     }
 }
