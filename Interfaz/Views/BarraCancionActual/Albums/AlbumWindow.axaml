@@ -7,7 +7,7 @@
         xmlns:models="using:Interfaz.Models"
         x:DataType="models:Album"
         Title="Album"
-        Width="500" Height="400"
+        Width="500" Height="500"
         Background="#2B1D14">
   <DockPanel>
 
@@ -18,10 +18,16 @@
                  HorizontalAlignment="Center"/>
     </StackPanel>
 
-    <StackPanel DockPanel.Dock="Bottom" Margin="20, 0, 20, 20">
-        <Button Content="SALIR" 
-                Click="CerrarVentana"
-                HorizontalAlignment="Right" 
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" 
+                HorizontalAlignment="Right" Spacing="10" Margin="20, 0, 20, 20">
+      <Button Content="GUARDAR" 
+              Click="GuardarClick"
+                HorizontalContentAlignment="Center"
+                Background="#4E342E" 
+                Foreground="#F5F5DC" 
+                Padding="10,10"/>
+      <Button Content="SALIR" 
+                Click="CerrarVentana" 
                 HorizontalContentAlignment="Center"
                 Background="#8A3220" 
                 Foreground="#F5F5DC" 
@@ -30,26 +36,30 @@
     
     <StackPanel VerticalAlignment="Center" 
                 HorizontalAlignment="Center" 
-                Spacing="20">
+                Spacing="10">
 
         <Image Source="avares://Interfaz/Assets/album.png" 
                Width="200" Height="200" 
                HorizontalAlignment="Center"/>
 
-        <StackPanel Spacing="15" Width="300">
-            <Button Content="{Binding nombre, StringFormat='Nombre: {0}'}" 
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E" 
-                    Foreground="#F5F5DC" 
-                    Padding="10"/>
+        <StackPanel Spacing="10" Width="300">
         
-            <Button Content="{Binding year, StringFormat='Año: {0}'}" 
-                    HorizontalAlignment="Stretch" 
-                    HorizontalContentAlignment="Center"
-                    Background="#4E342E" 
-                    Foreground="#F5F5DC" 
-                    Padding="10"/>
+          <TextBlock Text="Nombre:" Foreground="#F5F5DC" FontWeight="Bold"/>
+            <TextBox Text="{Binding nombre, Mode=TwoWay}" 
+                     Background="#4E342E" 
+                     Foreground="#F5F5DC" 
+                     Padding="10"
+                     HorizontalContentAlignment="Center"/>
+        
+	    <TextBlock Text="Año:" Foreground="#F5F5DC" FontWeight="Bold"/>
+	    <NumericUpDown Value="{Binding year, Mode=TwoWay}"
+		       ShowButtonSpinner="False"
+		       AllowSpin="False"
+		       Background="#4E342E" 
+		       Foreground="#F5F5DC"
+		       HorizontalContentAlignment="Center"/>
+
+	<!-- Para el Año -->
         </StackPanel>
 
     </StackPanel>

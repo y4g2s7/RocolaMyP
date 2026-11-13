@@ -14,7 +14,7 @@ public class BaseDatos{
 	using (var comando = conexion.CreateCommand())
 	{
 	    comando.CommandText = @"
-    SELECT r.id_rola, r.title, r.genre, p.name, a.name, r.id_performer
+    SELECT r.id_rola, r.title, r.genre, p.name, a.name, r.id_performer, r.id_album
     FROM rolas r
     LEFT JOIN performers p ON r.id_performer = p.id_performer
     LEFT JOIN albums a     ON r.id_album = a.id_album";
@@ -28,7 +28,8 @@ public class BaseDatos{
 			    genero = reader.IsDBNull(2) ? "" : reader.GetString(2),
 			    performer = reader.IsDBNull(3) ? "" : reader.GetString(3),
 			    album = reader.IsDBNull(4) ? "" : reader.GetString(4),
-			    id_performer = reader.IsDBNull(5) ? 0 : reader.GetInt32(5) 
+			    id_performer = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
+			    id_album = reader.IsDBNull(6) ? 0 : reader.GetInt32(6) 
 			};
 
 		    lista.Add(cancion);
@@ -247,7 +248,7 @@ public class BaseDatos{
 	
 	using (var comando = conexion.CreateCommand()){
 	    comando.CommandText = @"
-            SELECT a.name, a.year 
+            SELECT a.id_album, a.name, a.year 
             FROM rolas r
             JOIN albums a ON r.id_album = a.id_album
             WHERE r.id_rola = @id";
@@ -258,8 +259,9 @@ public class BaseDatos{
             if(reader.Read()){
                 var album = new Album
 		    {
-		        nombre = reader.IsDBNull(0) ? "" : reader.GetString(0),
-			year = reader.IsDBNull(1) ? 0 : reader.GetInt32(1)
+			id_album = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+		        nombre = reader.IsDBNull(1) ? "" : reader.GetString(1),
+			year = reader.IsDBNull(2) ? 0 : reader.GetInt32(2)
 		    };
                 return album;
             }
@@ -579,6 +581,67 @@ public class BaseDatos{
 	    cmdUpdate.Parameters.AddWithValue("@tipo", artista.tipo);
 	    cmdUpdate.Parameters.AddWithValue("@id", artista.id);
 	    cmdUpdate.ExecuteNonQuery();
+
+	    transaccion.Commit();
+	}
+	catch(Exception){
+	    transaccion.Rollback();
+	    throw;
+	}
+    }
+
+
+    public static void ActualizarAlbum(Album album, int idViejoAlbum){
+	using var conexion = conectar();
+	using var transaccion = conexion.BeginTransaction();
+
+	try{
+	    int idExistente = 0;
+        
+	    // Verificamos si el nombre del album ya existe en OTRO album
+	    using(var cmdCheck = conexion.CreateCommand()){
+		cmdCheck.Transaction = transaccion;
+		cmdCheck.CommandText = "SELECT id_album FROM albums WHERE name = @nombre AND id_album != @idViejo";
+		cmdCheck.Parameters.AddWithValue("@nombre", album.nombre);
+		cmdCheck.Parameters.AddWithValue("@idViejo", idViejoAlbum);
+            
+		var result = cmdCheck.ExecuteScalar();
+		if(result!= null){
+		    idExistente = Convert.ToInt32(result);
+		}
+	    }
+
+	    if(idExistente > 0){
+		// FUSION: Movemos todas las rolas al album que ya existia
+		using(var cmdMover = conexion.CreateCommand()){
+		    cmdMover.Transaction = transaccion;
+		    cmdMover.CommandText = "UPDATE rolas SET id_album = @idExistente WHERE id_album = @idViejo";
+		    cmdMover.Parameters.AddWithValue("@idExistente", idExistente);
+		    cmdMover.Parameters.AddWithValue("@idViejo", idViejoAlbum);
+		    cmdMover.ExecuteNonQuery();
+		}
+            
+		// Borramos el álbum duplicado
+		using(var cmdBorrar = conexion.CreateCommand()){
+		    cmdBorrar.Transaction = transaccion;
+		    cmdBorrar.CommandText = "DELETE FROM albums WHERE id_album = @idViejo";
+		    cmdBorrar.Parameters.AddWithValue("@idViejo", idViejoAlbum);
+		    cmdBorrar.ExecuteNonQuery();
+		}
+		album.id_album = idExistente; 
+	    }
+	    else{
+		// ACTUALIZACIÓN NORMAL
+		using(var cmdUpdate = conexion.CreateCommand()){
+		    cmdUpdate.Transaction = transaccion;
+		    cmdUpdate.CommandText = "UPDATE albums SET name = @nombre, year = @year WHERE id_album = @idViejo";
+		    cmdUpdate.Parameters.AddWithValue("@nombre", album.nombre);
+		    cmdUpdate.Parameters.AddWithValue("@year", album.year);
+		    cmdUpdate.Parameters.AddWithValue("@idViejo", idViejoAlbum);
+		    cmdUpdate.ExecuteNonQuery();
+		}
+		album.id_album = idViejoAlbum;
+	    }
 
 	    transaccion.Commit();
 	}

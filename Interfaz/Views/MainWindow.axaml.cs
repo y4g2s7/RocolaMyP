@@ -106,7 +106,7 @@ public partial class MainWindow : Window
 	
     }
     
-    private void AlbumClick(object? sender, RoutedEventArgs e) {
+    private async void AlbumClick(object? sender, RoutedEventArgs e) {
 	var vm = DataContext as MainWindowViewModel;
 	// Obtenemos la cancion seleccionada que vive en MainWindowViewModel
 	var cancion = vm?.CancionSeleccionada;
@@ -114,9 +114,18 @@ public partial class MainWindow : Window
 	
 	Album? album = vm.datosAlbum(cancion);
 	if(album == null) return;
+
+	int idViejoAlbum = album.id_album;
 	
-	new AlbumWindow(album).ShowDialog(this); 
-    
+	var ventana = new AlbumWindow();
+	ventana.DataContext = album;
+	var albumModificado= await ventana.ShowDialog<Album>(this); 
+
+	// Si el usuario guardo actualizamos
+	if(albumModificado != null){
+	    // Le mandamos al modelo para modificar
+	    vm.ActualizarAlbum(albumModificado,idViejoAlbum);
+	}
     }
     
     private async void RegistrarArtistaClick(object? sender, RoutedEventArgs e){

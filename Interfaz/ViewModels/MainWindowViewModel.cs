@@ -187,4 +187,30 @@ public partial class MainWindowViewModel : ViewModelBase
 	
     }
 
+    public void ActualizarAlbum(Album albumEditado, int idViejoAlbum){
+	//Mandamos a llamar a la base de datos
+	BaseDatos.ActualizarAlbum(albumEditado, idViejoAlbum);
+    
+	//Buscamos las canciones que pertenecían a ese album viejo
+	var cancionesAfectadas = canciones.Where(c => c.id_album == idViejoAlbum).ToList();
+
+	//Las actualizamos una por una
+	foreach(var cancionVieja in cancionesAfectadas)
+	{
+	    int index = canciones.IndexOf(cancionVieja);
+
+	    var cancionNueva = new CancionFila
+		{
+		    id = cancionVieja.id,
+		    id_performer = cancionVieja.id_performer,
+		    id_album = albumEditado.id_album,
+		    titulo = cancionVieja.titulo,
+		    genero = cancionVieja.genero,
+		    performer = cancionVieja.performer,
+		    album = albumEditado.nombre 
+		};
+
+	    canciones[index] = cancionNueva;
+	}
+    }
 }
