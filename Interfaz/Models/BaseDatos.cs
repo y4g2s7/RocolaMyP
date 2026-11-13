@@ -160,20 +160,8 @@ public class BaseDatos{
 
     public static void registrarArtista(Artista artista){
 	using var conexion = conectar();
-	using var comando = conexion.CreateCommand();
-	
-	// Actualizamos el nombre y el tipo en la tabla performers
-	comando.CommandText = @"
-        UPDATE performers 
-        SET name = @nombre, id_type = @tipo 
-        WHERE id_performer = @id";
-        
-	comando.Parameters.AddWithValue("@nombre", artista.seudonimo);
-	comando.Parameters.AddWithValue("@tipo", artista.tipo);
-	comando.Parameters.AddWithValue("@id", artista.id);
-	
-	comando.ExecuteNonQuery();
 
+	registrarPerformer(conexion, artista);
 	// Si es persona actualizamos
 	if(artista.tipo == 0){
 
@@ -547,6 +535,56 @@ public class BaseDatos{
 	    comando.Parameters.AddWithValue("@viejoInicio", inicioViejo);
         
 	    comando.ExecuteNonQuery();
+	}
+    }
+
+    private static bool fusionarPerformer(SqliteConnection conexion, SqliteTransaction transaccion, Artista artista){
+	using var cmdCheck = conexion.CreateCommand();
+	cmdCheck.Transaction = transaccion;
+	cmdCheck.CommandText = "SELECT id_performer FROM performers WHERE name = @nombre AND id_performer != @id";
+	cmdCheck.Parameters.AddWithValue("@nombre", artista.seudonimo);
+	cmdCheck.Parameters.AddWithValue("@id", artista.id);
+
+	var result = cmdCheck.ExecuteScalar();
+	if(result == null) return false;
+	int idExistente = Convert.ToInt32(result);
+
+	using var cmdMover = conexion.CreateCommand();
+	cmdMover.Transaction = transaccion;
+	cmdMover.CommandText = "UPDATE rolas SET id_performer = @idExistente WHERE id_performer = @idViejo";
+	cmdMover.Parameters.AddWithValue("@idExistente", idExistente);
+	cmdMover.Parameters.AddWithValue("@idViejo", artista.id);
+	cmdMover.ExecuteNonQuery();
+
+	using var cmdBorrar = conexion.CreateCommand();
+	cmdBorrar.Transaction = transaccion;
+	cmdBorrar.CommandText = "DELETE FROM performers WHERE id_performer = @idViejo";
+	cmdBorrar.Parameters.AddWithValue("@idViejo", artista.id);
+	cmdBorrar.ExecuteNonQuery();
+
+	artista.id = idExistente;
+	return true;
+    }
+
+    private static void registrarPerformer(SqliteConnection conexion, Artista artista){
+	using var transaccion = conexion.BeginTransaction();
+
+	try{
+	    fusionarPerformer(conexion, transaccion, artista);
+
+	    using var cmdUpdate = conexion.CreateCommand();
+	    cmdUpdate.Transaction = transaccion;
+	    cmdUpdate.CommandText = "UPDATE performers SET name = @nombre, id_type = @tipo WHERE id_performer = @id";
+	    cmdUpdate.Parameters.AddWithValue("@nombre", artista.seudonimo);
+	    cmdUpdate.Parameters.AddWithValue("@tipo", artista.tipo);
+	    cmdUpdate.Parameters.AddWithValue("@id", artista.id);
+	    cmdUpdate.ExecuteNonQuery();
+
+	    transaccion.Commit();
+	}
+	catch(Exception){
+	    transaccion.Rollback();
+	    throw;
 	}
     }
 }

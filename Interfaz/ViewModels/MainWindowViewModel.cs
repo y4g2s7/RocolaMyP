@@ -116,7 +116,7 @@ public partial class MainWindowViewModel : ViewModelBase
 	int id = cf.id;
 	return BaseDatos.getDatosAlbum(id);
     }
-
+    
     public static void agregarNuevaPersona(Artista artista){
         BaseDatos.registrarArtista(artista);   
     }
